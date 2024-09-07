@@ -15,7 +15,7 @@ const Services = () => {
   console.log({ search, filterByMinPrice, filterByMaxPrice, sortByPrice });
 
   return (
-    <div className="container mx-auto px-4 lg:px-10 xxl:px-0 pt-20 lg:pt-32 min-h-[67vh]">
+    <div className="container mx-auto px-4 lg:px-10 pt-20 lg:pt-32 min-h-[67vh]">
       <ServiceFilter
         setSearch={setSearch}
         setFilterByMinPrice={setFilterByMinPrice}
@@ -43,7 +43,7 @@ const Services = () => {
                 <FaRegClock />
                 <span>60 min</span>
               </p>
-              <Link to="/services/1">
+              <Link to="/services/1" className="inline-block">
                 <Button className="py-1 h-fit text-sm flex items-center gap-1">
                   <span>Details</span>
                   <FaArrowRight />
@@ -69,7 +69,7 @@ const Services = () => {
                 <FaRegClock />
                 <span>60 min</span>
               </p>
-              <Link to="/services/1">
+              <Link to="/services/1" className="inline-block">
                 <Button className="py-1 h-fit text-sm flex items-center gap-1">
                   <span>Details</span>
                   <FaArrowRight />
@@ -95,7 +95,7 @@ const Services = () => {
                 <FaRegClock />
                 <span>60 min</span>
               </p>
-              <Link to="/services/1">
+              <Link to="/services/1" className="inline-block">
                 <Button className="py-1 h-fit text-sm flex items-center gap-1">
                   <span>Details</span>
                   <FaArrowRight />
@@ -121,7 +121,7 @@ const Services = () => {
                 <FaRegClock />
                 <span>60 min</span>
               </p>
-              <Link to="/services/1">
+              <Link to="/services/1" className="inline-block">
                 <Button className="py-1 h-fit text-sm flex items-center gap-1">
                   <span>Details</span>
                   <FaArrowRight />

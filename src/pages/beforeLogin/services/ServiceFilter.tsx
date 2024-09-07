@@ -49,7 +49,7 @@ const ServiceFilter: FC<ServicesFilterProps> = ({
           <select
             name="sorting"
             id="sorting"
-            className="border border-gray-300 w-full h-9 px-2 py-2 text-sm rounded-sm"
+            className="border border-gray-300 w-full h-9 px-1 py-2 text-sm rounded-sm"
             onChange={(e) => setSortByPrice(e.target.value)}
           >
             <option value="">Sort by price</option>

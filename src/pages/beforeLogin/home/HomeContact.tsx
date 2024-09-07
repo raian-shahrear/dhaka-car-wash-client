@@ -7,7 +7,7 @@ import { toast } from "sonner";
 const HomeContact = () => {
   return (
     <section
-      className="container mx-auto px-4 lg:px-10 xxl:px-0 pt-4 mb-10"
+      className="container mx-auto px-4 lg:px-10 pt-4 mb-10"
       data-aos="fade-right"
       data-aos-easing="ease-out-cubic"
       data-aos-duration="1000"

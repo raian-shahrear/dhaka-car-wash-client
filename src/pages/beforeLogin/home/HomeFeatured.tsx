@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const HomeFeatured = () => {
   return (
-    <section className="container mx-auto px-4 lg:px-10 xxl:px-0 pt-10 mb-10">
+    <section className="container mx-auto px-4 lg:px-10 pt-10 mb-10">
       <div className="text-center mb-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-3">
           Our Best Services

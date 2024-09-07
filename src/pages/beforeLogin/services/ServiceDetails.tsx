@@ -1,22 +1,23 @@
 import serviceImg from "@/assets/home/services/Car Disinfecting.jpg";
 import { Button } from "@/components/ui/button";
+import { FaRegClock } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const ServiceDetails = () => {
   return (
-    <section className="container mx-auto px-4 lg:px-10 xxl:px-0 pt-20 lg:pt-32 min-h-[67vh]">
-      <div className="mb-10 grid lg:grid-cols-2 gap-x-10 gap-y-6">
-        <div>
+    <div className="pt-10 lg:pt-32 min-h-[67vh]">
+      <div className="container mx-auto p-4 lg:p-10 shadow-lg">
+        <section className="h-full lg:h-[500px] mb-10">
           <img
             src={serviceImg}
             alt="service"
-            className="w-full h-full object-cover object-center rounded-md"
+            className=" w-full h-full object-cover object-center rounded-lg"
           />
-        </div>
-        <div>
-          <p className="font-bold text-2xl">Car Disinfecting</p>
-          <p className="text-base my-3">
+        </section>
+        <section>
+          <p className="font-bold text-2xl mb-3">Car Disinfecting</p>
+          <p className="text-base mb-3">
             Car disinfecting goes beyond the standard cleaning to sanitize every
             surface inside your vehicle, ensuring a safe and healthy
             environment. This service uses EPA-approved disinfectants to kill
@@ -29,9 +30,20 @@ const ServiceDetails = () => {
             looks clean but also promotes health and well-being for everyone
             inside.
           </p>
-          <p className="font-bold text-4xl mb-4">$50</p>
-          <div>
-            <select className="border border-gray-300 w-full sm:w-2/4 h-9 px-2 py-2 text-sm rounded-sm">
+          <p className="text-base mb-3 flex items-center gap-1">
+            <span>Service cost:</span> <span className="font-bold">$50</span>
+          </p>
+          <p className="text-base flex items-center gap-1 mb-3">
+            <span>Duration: </span>
+            <FaRegClock />
+            <span className="font-bold">60 min</span>
+          </p>
+          <div className="grid sm:grid-cols-2 gap-5 w-full lg:w-3/4">
+            <input
+              type="date"
+              className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
+            />
+            <select className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm">
               <option value="">Select slot</option>
               <option value="12:00 - 13:00" disabled={true}>
                 12:00 - 13:00
@@ -42,7 +54,7 @@ const ServiceDetails = () => {
           </div>
 
           <div className="mt-8">
-            <Link to="/booking">
+            <Link to="/booking" className="inline-block">
               <Button className="bg-red-300 text-gray-900 h-fit text-sm py-2 px-2 rounded transition-all duration-300 hover:bg-red-400 flex items-center gap-1">
                 <span className="text-lg">
                   <MdBookmarkAdded />
@@ -51,9 +63,9 @@ const ServiceDetails = () => {
               </Button>
             </Link>
           </div>
-        </div>
+        </section>
       </div>
-    </section>
+    </div>
   );
 };
 

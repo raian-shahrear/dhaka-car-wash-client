@@ -62,7 +62,7 @@ const HomeReview = () => {
         />
         <div className="bg-feature-overlay w-full h-full absolute top-0 left-0"></div>
         <div className="w-full absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
-          <div className="container mx-auto px-4 lg:px-10 xxl:px-0">
+          <div className="container mx-auto px-4 lg:px-10">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl font-bold text-white mb-3">
                 Client Review
