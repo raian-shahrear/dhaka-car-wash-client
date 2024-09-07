@@ -23,8 +23,7 @@ const Footer = () => {
             </span>
           </a>
             <p className="mt-3 text-sm">
-              Experience top-tier fitness equipment where quality and innovation
-              meet to elevate your workout.
+              From Road Dust to Showroom Shine - Experience the Ultimate Car Wash That Cleans, Protects, and Transforms Your Ride with Every Visit!
             </p>
           </div>
           <div>

@@ -7,6 +7,7 @@ import ServiceDetails from "@/pages/beforeLogin/services/ServiceDetails";
 import Services from "@/pages/beforeLogin/services/Services";
 import { createBrowserRouter } from "react-router-dom";
 import Booking from "../pages/beforeLogin/booking/Booking";
+import BookingSuccessful from "@/pages/beforeLogin/booking/BookingSuccessful";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
             {
                 path: '/booking',
                 element: <Booking />
+            },
+            {
+                path: '/booking-successful',
+                element: <BookingSuccessful />
             },
         ]
     },
