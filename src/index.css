@@ -18,6 +18,13 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.swiper-pagination-bullet {
+  background: #d6d6d6;
+}
+.swiper-pagination-bullet-active {
+  background: #fca5a5;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

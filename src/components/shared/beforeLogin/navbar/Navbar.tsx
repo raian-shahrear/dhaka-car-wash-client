@@ -1,8 +1,7 @@
 import { useState } from "react";
 import NavbarItems from "./NavbarItems";
 import logo from "@/assets/logo/logo.png";
-import { Link } from "react-router-dom";
-import { IoIosCart } from "react-icons/io";
+import NavbarUserDropdown from "./NavbarUserDropdown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,20 +27,7 @@ const Navbar = () => {
           <div className="lg:hidden">
             <div className="flex gap-4 items-center">
               <div>
-                <Link
-                  to="/cart"
-                  aria-label="Cart"
-                  title="Cart"
-                  className="font-medium tracking-wide text-red-300 transition-all duration-300 hover:text-secondary relative"
-                >
-                  <span className="text-xl">
-                    <IoIosCart />
-                  </span>
-                  <span className="bg-red-700 w-[19px] h-[19px] text-[9px] text-white flex justify-center items-center rounded-full absolute top-[-10px] right-[-8px]">
-                    {/* {orderedProducts?.length ? orderedProducts?.length > 99 ? '99+' : orderedProducts?.length : 0} */}
-                    0
-                  </span>
-                </Link>
+                <NavbarUserDropdown />
               </div>
               <button
                 aria-label="Open Menu"

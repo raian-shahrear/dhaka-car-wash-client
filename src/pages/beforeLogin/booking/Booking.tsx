@@ -23,7 +23,7 @@ const Booking = () => {
         </div>
         <div>
           <div className="flex items-start gap-2 mb-5">
-            <p className="font-bold text-2xl">Car Disinfecting</p>
+            <p className="font-bold text-xl sm:text-2xl">Car Disinfecting</p>
             <p className="font-semibold text-sm">$50</p>
           </div>
           <form onSubmit={handleBooking} className="grid sm:grid-cols-2 gap-5">
@@ -48,7 +48,7 @@ const Booking = () => {
             <div>
               <select
                 name="slot"
-                className="border border-gray-300 w-full h-9 px-2 py-2 text-sm rounded-sm"
+                className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               >
                 <option value="">Select slot</option>
                 <option value="14:00 - 15:00">12:00 - 13:00</option>
@@ -59,7 +59,7 @@ const Booking = () => {
               </select>
             </div>
             <div>
-              <select className="border border-gray-300 w-full h-9 px-2 py-2 text-sm rounded-sm">
+              <select className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm">
                 <option value="">Vehicle Type</option>
                 <option value="car">Car</option>
                 <option value="car">Car</option>

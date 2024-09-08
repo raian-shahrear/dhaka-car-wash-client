@@ -7,6 +7,7 @@ import clientImg1 from "@/assets/home/client/Jhon.jpg";
 import clientImg2 from "@/assets/home/client/Sam.jpg";
 import clientImg3 from "@/assets/home/client/Toya.jpg";
 import { FaStar } from "react-icons/fa";
+import HomeAddReviewModal from "./HomeAddReviewModal";
 import { Link } from "react-router-dom";
 
 const swiperSlideBreakpoints = {
@@ -24,7 +25,7 @@ const swiperSlideBreakpoints = {
   },
 };
 
-export const clientReviews = [
+const clientReviews = [
   {
     _id: "01",
     img: clientImg1,
@@ -64,10 +65,10 @@ const HomeReview = () => {
         <div className="w-full absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
           <div className="container mx-auto px-4 lg:px-10">
             <div className="text-center mb-8 sm:mb-10">
-              <h2 className="text-2xl font-bold text-white mb-3">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 Client Review
               </h2>
-              <p className="text-white">
+              <p className="text-white text-sm sm:text-base">
                 Excellent car wash service! The team was professional,
                 efficient, and paid great attention to detail. My car looks
                 spotless and feels brand new every time. I appreciate the
@@ -75,9 +76,7 @@ const HomeReview = () => {
                 recommend this service for anyone looking for a reliable and
                 thorough car wash!
               </p>
-              <Button className="text-sm bg-red-300 text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-red-400 mt-6" disabled={false}>
-                Place your review
-              </Button>
+              <HomeAddReviewModal />
             </div>
             <Swiper
               modules={[Pagination, A11y]}
@@ -116,7 +115,14 @@ const HomeReview = () => {
               ))}
             </Swiper>
             <div className="flex justify-center mt-4 sm:mt-6">
-              <Button className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200" disabled={false}>All Reviews</Button>
+              <Link to="/reviews" className="w-fit">
+                <Button
+                  className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
+                  disabled={false}
+                >
+                  All Reviews
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

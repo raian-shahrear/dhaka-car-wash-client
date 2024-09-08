@@ -16,8 +16,8 @@ const ServiceDetails = () => {
           />
         </section>
         <section>
-          <p className="font-bold text-2xl mb-3">Car Disinfecting</p>
-          <p className="text-base mb-3">
+          <p className="font-bold sm:text-2xl mb-3">Car Disinfecting</p>
+          <p className="text-sm sm:text-base mb-3">
             Car disinfecting goes beyond the standard cleaning to sanitize every
             surface inside your vehicle, ensuring a safe and healthy
             environment. This service uses EPA-approved disinfectants to kill
@@ -30,10 +30,10 @@ const ServiceDetails = () => {
             looks clean but also promotes health and well-being for everyone
             inside.
           </p>
-          <p className="text-base mb-3 flex items-center gap-1">
+          <p className="text-sm sm:text-base mb-3 flex items-center gap-1">
             <span>Service cost:</span> <span className="font-bold">$50</span>
           </p>
-          <p className="text-base flex items-center gap-1 mb-3">
+          <p className="text-sm sm:text-base flex items-center gap-1 mb-3">
             <span>Duration: </span>
             <FaRegClock />
             <span className="font-bold">60 min</span>

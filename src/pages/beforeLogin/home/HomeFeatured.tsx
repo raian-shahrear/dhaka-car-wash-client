@@ -9,10 +9,10 @@ const HomeFeatured = () => {
   return (
     <section className="container mx-auto px-4 lg:px-10 pt-10 mb-10">
       <div className="text-center mb-10">
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
           Our Best Services
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 text-sm sm:text-base">
           Experience a top-quality car wash service that combines advanced
           cleaning technology with professional care. We offer a range of
           services, from quick washes to deep detailing, ensuring your vehicle
@@ -36,7 +36,7 @@ const HomeFeatured = () => {
                 spot-free rinse and hand dry.
               </p>
               <Link
-                to="/"
+                to="/services/1"
                 className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
               >
                 <span>View Details</span>
@@ -58,7 +58,7 @@ const HomeFeatured = () => {
                 spot-free rinse and hand dry.
               </p>
               <Link
-                to="/"
+                to="/services/1"
                 className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
               >
                 <span>View Details</span>
@@ -80,7 +80,7 @@ const HomeFeatured = () => {
                 spot-free rinse and hand dry.
               </p>
               <Link
-                to="/"
+                to="/services/1"
                 className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
               >
                 <span>View Details</span>
@@ -102,7 +102,7 @@ const HomeFeatured = () => {
                 spot-free rinse and hand dry.
               </p>
               <Link
-                to="/"
+                to="/services/1"
                 className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
               >
                 <span>View Details</span>

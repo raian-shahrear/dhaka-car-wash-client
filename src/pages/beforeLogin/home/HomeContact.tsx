@@ -12,7 +12,7 @@ const HomeContact = () => {
       data-aos-easing="ease-out-cubic"
       data-aos-duration="1000"
     >
-      <h2 className="text-center text-2xl font-bold text-gray-900 mb-10">
+      <h2 className="text-center text-xl sm:text-2xl font-bold text-gray-900 mb-10">
         Contact Us
       </h2>
       <div className="w-full md:w-10/12 lg:w-7/12 mx-auto shadow-lg rounded-md border-t-4 border-gray-900 p-6 md:p-10">

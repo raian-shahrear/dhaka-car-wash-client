@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { IoIosCart } from "react-icons/io";
 import { Link, NavLink } from "react-router-dom";
+import NavbarUserDropdown from "./NavbarUserDropdown";
 
 const NavbarItems = () => {
   return (
@@ -33,27 +33,23 @@ const NavbarItems = () => {
           Services
         </NavLink>
       </li>
-      <li className="hidden lg:block">
-        <Link
-          to="/cart"
-          aria-label="Cart"
-          title="Cart"
-          className="font-medium tracking-wide text-red-300 transition-all duration-300 hover:text-secondary relative"
-        >
-          <span className="text-xl">
-            <IoIosCart />
-          </span>
-          <span className="bg-red-700 w-[19px] h-[19px] text-[9px] text-white flex justify-center items-center rounded-full absolute top-[-10px] right-[-8px]">
-            {/* {orderedProducts?.length ? orderedProducts?.length > 99 ? '99+' : orderedProducts?.length : 0} */}
-            0
-          </span>
-        </Link>
-      </li>
-      <li>
-        <Link to="/login">
-          <Button className="text-sm bg-red-300 text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-red-400">Login</Button>
-        </Link>
-        <Button className="text-sm bg-gray-900 text-white lg:bg-white lg:text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-900 lg:hover:bg-white">Sign up</Button>
+      <li className="flex items-center gap-2 relative">
+        <div className="hidden lg:block">
+          <NavbarUserDropdown />
+        </div>
+        <div className="flex items-center gap-2">
+          <Link to="/login">
+            <Button className="text-xs bg-red-300 text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-red-400">
+              Login
+            </Button>
+          </Link>
+          <span className="text-gray-300">|</span>
+          <Link to="/signup">
+            <Button className="text-xs bg-gray-900 text-white lg:bg-white lg:text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-gray-900 lg:hover:bg-white">
+              Sign up
+            </Button>
+          </Link>
+        </div>
       </li>
     </>
   );
