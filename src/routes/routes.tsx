@@ -11,6 +11,12 @@ import BookingSuccessful from "@/pages/beforeLogin/booking/BookingSuccessful";
 import Booking from "@/pages/beforeLogin/booking/Booking";
 import Login from "@/pages/beforeLogin/authentication/Login";
 import Signup from "@/pages/beforeLogin/authentication/Signup";
+import ServiceManagement from "@/pages/afterLogin/serviceManagement/ServiceManagement";
+import SlotManagement from "@/pages/afterLogin/slotManagement/SlotManagement";
+import Bookings from "@/pages/afterLogin/userManagement/Bookings";
+import Users from "@/pages/afterLogin/userManagement/Users";
+import MyAccount from "@/pages/afterLogin/userManagement/MyAccount";
+import MyBookings from "@/pages/afterLogin/userManagement/MyBookings";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +29,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/services",
+        path: "services",
         element: <Services />,
       },
       {
@@ -57,8 +63,32 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        path: "/dashboard",
+        path: "index",
         element: <Dashboard />,
+      },
+      {
+        path: "service-management",
+        element: <ServiceManagement />,
+      },
+      {
+        path: "slot-management",
+        element: <SlotManagement />,
+      },
+      {
+        path: "user-management/bookings",
+        element: <Bookings />,
+      },
+      {
+        path: "user-management/users",
+        element: <Users />,
+      },
+      {
+        path: "user-management/my-bookings",
+        element: <MyBookings />,
+      },
+      {
+        path: "user-management",
+        element: <MyAccount />,
       },
     ],
   },

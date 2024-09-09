@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const NavbarUserDropdown = () => {
   const [controlDropdown, setControlDropdown] = useState(false);
-  console.log(controlDropdown)
   return (
     <div className="relative">
       <div className="cursor-pointer" onClick={()=>setControlDropdown(!controlDropdown)}>
@@ -38,7 +37,7 @@ const NavbarUserDropdown = () => {
         <ul className="p-1 pt-0">
           <li onClick={()=>setControlDropdown(false)}>
             <Link
-              to="/dashboard"
+              to="/dashboard/index"
               className="w-full flex items-center gap-1 p-2 cursor-pointer rounded-md transition-all duration-300 hover:bg-gray-100"
             >
               <span className="text-lg">
