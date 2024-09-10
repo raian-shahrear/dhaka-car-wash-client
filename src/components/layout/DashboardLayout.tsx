@@ -9,9 +9,9 @@ const DashboardLayout = () => {
   return (
     <div className="flex">
       <Sidebar setControlSidebar={setControlSidebar} controlSidebar={controlSidebar} />
-      <div className={`flex-1 transition-all duration-300 ${controlSidebar ? 'ml-0' : 'ml-0 lg:ml-[300px]'}`}>
+      <div className={`overflow-auto flex-1 transition-all duration-300 ${controlSidebar ? 'ml-0' : 'ml-0 lg:ml-[300px]'}`}>
         <Navbar setControlSidebar={setControlSidebar} controlSidebar={controlSidebar} />
-        <div className="p-5 h-[90.8vh]">
+        <div className="p-5 min-h-[90.8vh]">
           <Outlet />
         </div>
         <Footer />

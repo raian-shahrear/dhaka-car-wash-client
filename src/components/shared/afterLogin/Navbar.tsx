@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ setControlSidebar, controlSidebar }) => {
   return (
-    <div className="h-12 border-b px-5 flex justify-between items-center">
+    <div className="h-12 border-b px-5 flex justify-between items-center bg-white">
       <div
         className="text-2xl cursor-pointer"
         onClick={() => setControlSidebar(!controlSidebar)}

@@ -9,7 +9,7 @@ import { Link, NavLink } from "react-router-dom";
 const Sidebar = ({ setControlSidebar, controlSidebar }) => {
   return (
     <aside
-      className={`w-[280px] md:w-[300px] h-screen border-r bg-white absolute lg:fixed top-0 transition-all duration-300 ${
+      className={`z-10 w-[280px] md:w-[300px] h-screen border-r bg-white absolute lg:fixed top-0 transition-all duration-300 ${
         controlSidebar ? "left-0 lg:-left-[400%]" : "-left-[400%] lg:left-0"
       }`}
     >
