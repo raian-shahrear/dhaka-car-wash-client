@@ -14,9 +14,9 @@ import Signup from "@/pages/beforeLogin/authentication/Signup";
 import ServiceManagement from "@/pages/afterLogin/serviceManagement/ServiceManagement";
 import SlotManagement from "@/pages/afterLogin/slotManagement/SlotManagement";
 import Bookings from "@/pages/afterLogin/userManagement/Bookings";
-import Users from "@/pages/afterLogin/userManagement/Users";
+import Users from "@/pages/afterLogin/userManagement/users/Users";
 import MyAccount from "@/pages/afterLogin/userManagement/MyAccount";
-import MyBookings from "@/pages/afterLogin/userManagement/MyBookings";
+import MyBookings from "@/pages/afterLogin/userManagement/myBookings/MyBookings";
 
 const router = createBrowserRouter([
   {

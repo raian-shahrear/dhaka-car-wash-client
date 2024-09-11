@@ -16,7 +16,7 @@ const ServiceManagement = () => {
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
-        <h1 className="text-xl sm:text-2xl font-bold">Services</h1>
+        <h1 className="text-lg sm:text-xl font-bold">Services Management</h1>
         <AddService />
       </div>
       <Table>

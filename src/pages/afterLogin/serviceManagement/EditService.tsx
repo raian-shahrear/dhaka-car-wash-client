@@ -74,7 +74,7 @@ const EditService = () => {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="submit">Save change</Button>
+              <Button type="submit" className="w-fit h-fit text-xs py-2 px-2 rounded">Save change</Button>
             </DialogClose>
           </DialogFooter>
         </form>

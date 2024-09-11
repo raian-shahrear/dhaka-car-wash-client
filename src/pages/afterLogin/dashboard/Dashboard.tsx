@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className="text-xl sm:text-2xl font-bold">Dashboard</h1>
+      <h1 className="text-lg sm:text-xl font-bold">Dashboard</h1>
       <div
         className={`mt-10 grid sm:grid-cols-2 ${
           role === "admin"
