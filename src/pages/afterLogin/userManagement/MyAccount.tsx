@@ -82,7 +82,9 @@ const MyAccount = () => {
               type="submit"
               className="text-xs h-fit p-2 flex items-center gap-1"
             >
-              <span className="text-sm"><FaUserEdit /></span>
+              <span className="text-sm">
+                <FaUserEdit />
+              </span>
               <span>Update</span>
             </Button>
           </div>
