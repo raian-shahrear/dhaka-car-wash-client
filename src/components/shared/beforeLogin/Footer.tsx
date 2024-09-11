@@ -48,18 +48,18 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    to="/booking"
+                    to="/service-comparison"
                     className="text-sm transition-all duration-300 hover:underline"
                   >
-                    Booking
+                    Comparison
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/cart"
+                    to="/reviews"
                     className="text-sm transition-all duration-300 hover:underline"
                   >
-                    My Cart
+                    Reviews
                   </Link>
                 </li>
               </ul>

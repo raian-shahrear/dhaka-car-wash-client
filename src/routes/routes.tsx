@@ -17,6 +17,7 @@ import Bookings from "@/pages/afterLogin/userManagement/Bookings";
 import Users from "@/pages/afterLogin/userManagement/users/Users";
 import MyAccount from "@/pages/afterLogin/userManagement/MyAccount";
 import MyBookings from "@/pages/afterLogin/userManagement/myBookings/MyBookings";
+import ServiceComparison from "@/pages/beforeLogin/services/ServiceComparison";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/reviews",
         element: <Reviews />,
+      },
+      {
+        path: "/service-comparison",
+        element: <ServiceComparison />,
       },
     ],
   },

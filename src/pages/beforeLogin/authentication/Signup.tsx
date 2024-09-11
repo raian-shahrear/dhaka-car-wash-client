@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
@@ -77,6 +78,7 @@ const Signup = () => {
               Sign Up
             </Button>
           </form>
+          <p className="mt-4 text-xs font-medium text-center">Already have an account? Please <Link to="/login" className="text-blue-600 transition-all duration-300 hover:text-gray-900 hover:underline">login</Link></p>
         </div>
       </div>
     </div>

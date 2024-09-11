@@ -33,6 +33,20 @@ const NavbarItems = () => {
           Services
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/service-comparison"
+          aria-label="Comparison"
+          title="Comparison"
+          className={({ isActive }) =>
+            isActive
+              ? "text-sm font-medium tracking-wide text-gray-900 lg:text-white transition-all duration-300 lg:hover:text-white"
+              : "text-sm font-medium tracking-wide text-gray-500 lg:text-gray-400 transition-all duration-300 lg:hover:text-white"
+          }
+        >
+          Comparison
+        </NavLink>
+      </li>
       <li className="flex items-center gap-2 relative">
         <div className="hidden lg:block">
           <NavbarUserDropdown />
