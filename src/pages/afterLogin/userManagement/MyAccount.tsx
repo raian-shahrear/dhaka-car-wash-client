@@ -1,28 +1,59 @@
 import defaultImg from "@/assets/icon/user-avatar-black.png";
 import { Button } from "@/components/ui/button";
+import { FormEvent, useState } from "react";
 import { FaEdit, FaUserEdit } from "react-icons/fa";
 
 const MyAccount = () => {
+  const [preview, setPreview] = useState(defaultImg);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+
+    const profileInput = form.elements.namedItem("profileImg") as HTMLInputElement;
+    const profileFile = profileInput.files && profileInput.files[0];
+
+    const updateUser = {
+      name: (form.elements.namedItem("name") as HTMLInputElement)
+      .value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement)
+      .value,
+      profile: profileFile || defaultImg,
+      address: (form.elements.namedItem("address") as HTMLInputElement)
+      .value
+    };
+    console.log(updateUser);
+  };
+
+  // Update the preview image when a new file is selected
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file)); 
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
         <h1 className="text-lg sm:text-xl font-bold">My Account</h1>
       </div>
       <section className="p-5 shadow-lg rounded-lg border-t-4 w-full md:w-8/12 lg:w-6/12">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-2">
             <input
               type="file"
               name="profileImg"
               id="profileImg"
               className="hidden"
+              onChange={handleFileChange}
             />
             <label
               htmlFor="profileImg"
               className="inline-block relative cursor-pointer"
             >
               <img
-                src={defaultImg}
+                src={preview}
                 alt="profile"
                 className="w-16 h-16 rounded-full border-2 border-gray-300 p-1"
               />

@@ -14,6 +14,12 @@ import { FaEdit } from "react-icons/fa";
 const SlotStatusChange = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const updateSlotStatus = {
+      slotStatus: (form.elements.namedItem("slotStatus") as HTMLInputElement)
+        .value,
+    };
+    console.log(updateSlotStatus);
   };
   return (
     <Dialog>

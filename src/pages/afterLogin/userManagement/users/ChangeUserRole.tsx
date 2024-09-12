@@ -14,6 +14,12 @@ import { FaEdit } from "react-icons/fa";
 const ChangeUserRole = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const updateRole = {
+      role: (form.elements.namedItem("role") as HTMLInputElement)
+        .value,
+    };
+    console.log(updateRole);
   };
   return (
     <Dialog>
@@ -33,7 +39,7 @@ const ChangeUserRole = () => {
                 User Role
               </label>
               <select
-                name="slotStatus"
+                name="role"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               >
                 <option value="">Select role</option>

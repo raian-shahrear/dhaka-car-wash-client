@@ -11,8 +11,17 @@ import {
 } from "@/components/ui/table";
 import AddService from "./AddService";
 import EditService from "./EditService";
+import { toast } from "sonner";
 
 const ServiceManagement = () => {
+  // delete item
+  const handleDeleteItem = (item: Record<string, unknown>) => {
+    const isConfirmed = confirm("Are you sure to delete?");
+    if (isConfirmed) {
+      console.log(item.id);
+      toast.warning("Service has been deleted!");
+    }
+  };
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
@@ -53,7 +62,10 @@ const ServiceManagement = () => {
             <TableCell>
               <div className="flex gap-2">
                 <EditService />
-                <Button className="px-1 py-2 h-fit bg-red-700 rounded">
+                <Button
+                  className="px-1 py-2 h-fit bg-red-700 rounded"
+                  onClick={() => handleDeleteItem({ id: "01" })}
+                >
                   <RiDeleteBin5Line />
                 </Button>
               </div>

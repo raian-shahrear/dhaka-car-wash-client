@@ -1,31 +1,47 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const HomeAddReviewModal = () => {
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleReviewSubmit = async (data) => {
+    if (isValid || !isSubmitting) {
+      const newReview = {
+        userId: "01",
+        rating: data.rating,
+        review: data.review,
+      };
+      console.log(newReview);
+    }
   };
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
         <Button
           className="text-sm bg-red-300 text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-red-400 mt-6"
           disabled={false}
+          onClick={() => setModalOpen(true)}
         >
           Place your review
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] lg:max-w-[550px]">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(handleReviewSubmit)}>
           <DialogHeader>
             <DialogTitle>Add Review</DialogTitle>
           </DialogHeader>
@@ -35,8 +51,8 @@ const HomeAddReviewModal = () => {
                 Rating<span className="text-red-600">*</span>
               </label>
               <select
-                name="slot"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
+                {...register("rating", { required: true })}
               >
                 <option value="">Select Rating</option>
                 <option value="1">1</option>
@@ -45,23 +61,35 @@ const HomeAddReviewModal = () => {
                 <option value="4">4</option>
                 <option value="5">5</option>
               </select>
+              {errors.rating && (
+                <span className="text-xs text-red-600 mt-[2px] inline-block">
+                  This field is required
+                </span>
+              )}
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
                 Review<span className="text-red-600">*</span>
               </label>
               <textarea
-                name="address"
-                placeholder="Enter address"
+                placeholder="Enter review"
                 className="border border-gray-300 w-full min-h-20 px-2 py-1 text-sm rounded-sm"
-                required
+                {...register("review", { required: true })}
               ></textarea>
+              {errors.review && (
+                <span className="text-xs text-red-600 mt-[2px] inline-block">
+                  This field is required
+                </span>
+              )}
             </div>
           </div>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button type="submit">Submit</Button>
-            </DialogClose>
+            <Button
+              type="submit"
+              onClick={() => setModalOpen(!isValid || isSubmitting)}
+            >
+              Submit
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

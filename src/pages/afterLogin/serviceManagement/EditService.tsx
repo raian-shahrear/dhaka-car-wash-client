@@ -14,7 +14,19 @@ import { FaEdit } from "react-icons/fa";
 const EditService = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const updateService = {
+      name: (form.elements.namedItem("title") as HTMLInputElement).value,
+      description: (
+        form.elements.namedItem("description") as HTMLTextAreaElement
+      ).value,
+      price: (form.elements.namedItem("price") as HTMLInputElement).value,
+      duration: (form.elements.namedItem("duration") as HTMLInputElement).value,
+      isDeleted: false,
+    };
+    console.log(updateService);
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -74,7 +86,12 @@ const EditService = () => {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="submit" className="w-fit h-fit text-xs py-2 px-2 rounded">Save change</Button>
+              <Button
+                type="submit"
+                className="w-fit h-fit text-xs py-2 px-2 rounded"
+              >
+                Save change
+              </Button>
             </DialogClose>
           </DialogFooter>
         </form>

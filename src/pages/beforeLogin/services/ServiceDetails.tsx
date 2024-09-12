@@ -1,10 +1,21 @@
 import serviceImg from "@/assets/home/services/Car Disinfecting.jpg";
 import { Button } from "@/components/ui/button";
+import { FormEvent, useState } from "react";
 import { FaRegClock } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ServiceDetails = () => {
+  const navigate = useNavigate();
+  const [chooseSlot, setChooseSlot] = useState("");
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const [selectDate, setSelectDate] = useState(currentDate);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    navigate(`/booking`, { state: chooseSlot });
+  };
   return (
     <div className="pt-10 lg:pt-32 min-h-[67vh]">
       <div className="container mx-auto p-4 lg:p-10 shadow-lg">
@@ -38,31 +49,39 @@ const ServiceDetails = () => {
             <FaRegClock />
             <span className="font-bold">60 min</span>
           </p>
-          <div className="grid sm:grid-cols-2 gap-5 w-full lg:w-3/4">
-            <input
-              type="date"
-              className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
-            />
-            <select className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm">
-              <option value="">Select slot</option>
-              <option value="12:00 - 13:00" disabled={true}>
-                12:00 - 13:00
-              </option>
-              <option value="13:00 - 14:00">13:00 - 14:00</option>
-              <option value="14:00 - 15:00">14:00 - 15:00</option>
-            </select>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="grid sm:grid-cols-2 gap-5 w-full lg:w-3/4">
+              <input
+                type="date"
+                className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
+                min={selectDate}
+                defaultValue={selectDate}
+                onChange={(e)=> setSelectDate(e.target.value)}
+              />
+              <select
+                className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
+                onChange={(e)=> setChooseSlot(e.target.value)}
+              >
+                <option value="">Select slot</option>
+                <option value="01" disabled={true}>12:00 - 13:00</option>
+                <option value="02">13:00 - 14:00</option>
+                <option value="03">14:00 - 15:00</option>
+              </select>
+            </div>
 
-          <div className="mt-8">
-            <Link to="/booking" className="inline-block">
-              <Button className="bg-red-300 text-gray-900 h-fit text-sm py-2 px-2 rounded transition-all duration-300 hover:bg-red-400 flex items-center gap-1">
+            <div className="mt-8">
+              <Button
+                type="submit"
+                className="bg-red-300 text-gray-900 h-fit text-sm py-2 px-2 rounded transition-all duration-300 hover:bg-red-400 flex items-center gap-1"
+                disabled={chooseSlot ? false : true}
+              >
                 <span className="text-lg">
                   <MdBookmarkAdded />
                 </span>
                 Book Service
               </Button>
-            </Link>
-          </div>
+            </div>
+          </form>
         </section>
       </div>
     </div>

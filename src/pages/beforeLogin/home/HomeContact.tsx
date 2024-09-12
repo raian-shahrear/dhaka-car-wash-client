@@ -1,10 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { FaFacebookF, FaInstagram, FaPinterestP, FaTiktok, FaTwitter } from "react-icons/fa";
+import { useState } from "react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaPinterestP,
+  FaTiktok,
+  FaTwitter,
+} from "react-icons/fa";
 import { HiOutlinePhone } from "react-icons/hi";
 import { MdOutlineMail } from "react-icons/md";
 import { toast } from "sonner";
 
 const HomeContact = () => {
+  const [changeEmail, setChangeEmail] = useState("");
+  const [changeMessage, setChangeMessage] = useState("");
+
   return (
     <section
       className="container mx-auto px-4 lg:px-10 pt-4 mb-10"
@@ -18,12 +28,12 @@ const HomeContact = () => {
       <div className="w-full md:w-10/12 lg:w-7/12 mx-auto shadow-lg rounded-md border-t-4 border-gray-900 p-6 md:p-10">
         <div className="flex flex-col md:flex-row gap-x-5 lg:gap-x-10 gap-y-8">
           <div className="text-gray-900">
-            <p className="font-bold text-lg">Thunder Fitness</p>
+            <p className="font-bold text-lg">Dhaka Car Wash</p>
             <p className="flex items-center gap-2">
               <span>
                 <MdOutlineMail />
               </span>
-              <span>contact@thunder.com</span>
+              <span>contact@dhaka-car-wash.com</span>
             </p>
             <p className="flex items-center gap-2">
               <span>
@@ -92,6 +102,7 @@ const HomeContact = () => {
                 name="email"
                 placeholder="Enter email"
                 className="border rou rounded text-sm p-2 w-full"
+                onChange={(e) => setChangeEmail(e.target.value)}
                 required
               />
             </div>
@@ -100,6 +111,7 @@ const HomeContact = () => {
                 name="message"
                 placeholder="Write here..."
                 className="border rou rounded text-sm p-2 w-full"
+                onChange={(e) => setChangeMessage(e.target.value)}
                 required
               />
             </div>
@@ -107,6 +119,7 @@ const HomeContact = () => {
               type="submit"
               className="h-fit p-2"
               onClick={() => toast.success("Message has been sent.")}
+              disabled={changeEmail && changeMessage ? false : true}
             >
               Send
             </Button>
