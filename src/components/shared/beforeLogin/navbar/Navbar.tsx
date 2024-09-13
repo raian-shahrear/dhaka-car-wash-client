@@ -5,6 +5,7 @@ import NavbarUserDropdown from "./NavbarUserDropdown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div className="bg-gray-900 lg:fixed lg:w-full lg:z-10">
       <div className="container mx-auto px-4 lg:px-10 xxl:px-0 py-3">

@@ -1,17 +1,25 @@
-import HomeContact from './HomeContact';
-import HomeFeatured from './HomeFeatured';
-import HomeHero from './HomeHero';
-import HomeReview from './HomeReview';
+import { useAppSelector } from "@/redux/hooks";
+import HomeContact from "./HomeContact";
+import HomeFeatured from "./HomeFeatured";
+import HomeHero from "./HomeHero";
+import HomeReview from "./HomeReview";
+import { verifyToken } from "@/utils/verifyToken";
+import { TUser } from "@/types";
 
 const Home = () => {
-    return (
-        <div className='lg:pt-[74px] min-h-[67vh]'>
-            <HomeHero />
-            <HomeFeatured />
-            <HomeReview />
-            <HomeContact />
-        </div>
-    );
+  const { token } = useAppSelector((state) => state.auth);
+  let user;
+  if (token) {
+    user = verifyToken(token);
+  }
+  return (
+    <div className="lg:pt-[74px] min-h-[67vh]">
+      <HomeHero />
+      <HomeFeatured />
+      <HomeReview user={user as TUser} />
+      <HomeContact />
+    </div>
+  );
 };
 
 export default Home;

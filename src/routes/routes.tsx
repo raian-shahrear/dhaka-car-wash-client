@@ -18,6 +18,8 @@ import Users from "@/pages/afterLogin/userManagement/users/Users";
 import MyAccount from "@/pages/afterLogin/userManagement/MyAccount";
 import MyBookings from "@/pages/afterLogin/userManagement/myBookings/MyBookings";
 import ServiceComparison from "@/pages/beforeLogin/services/ServiceComparison";
+import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRouteForUser from "./ProtectedRouteForUser";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +49,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/reviews",
-        element: <Reviews />,
+        element: (
+          <ProtectedRoute>
+            <Reviews />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/service-comparison",
@@ -69,31 +75,59 @@ const router = createBrowserRouter([
     children: [
       {
         path: "index",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "service-management",
-        element: <ServiceManagement />,
+        element: (
+          <ProtectedRouteForUser role="admin">
+            <ServiceManagement />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "slot-management",
-        element: <SlotManagement />,
+        element: (
+          <ProtectedRouteForUser role="admin">
+            <SlotManagement />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "user-management/bookings",
-        element: <Bookings />,
+        element: (
+          <ProtectedRouteForUser role="admin">
+            <Bookings />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "user-management/users",
-        element: <Users />,
+        element: (
+          <ProtectedRouteForUser role="admin">
+            <Users />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "user-management/my-bookings",
-        element: <MyBookings />,
+        element: (
+          <ProtectedRouteForUser role="user">
+            <MyBookings />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "user-management",
-        element: <MyAccount />,
+        element: (
+          <ProtectedRoute>
+            <MyAccount />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

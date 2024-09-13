@@ -9,6 +9,7 @@ import clientImg3 from "@/assets/home/client/Toya.jpg";
 import { FaStar } from "react-icons/fa";
 import HomeAddReviewModal from "./HomeAddReviewModal";
 import { Link } from "react-router-dom";
+import { TUser } from "@/types";
 
 const swiperSlideBreakpoints = {
   320: {
@@ -52,7 +53,11 @@ const clientReviews = [
   },
 ];
 
-const HomeReview = () => {
+type TUserProps = {
+  user: TUser;
+};
+
+const HomeReview = ({ user }: TUserProps) => {
   return (
     <section className="pt-10 mb-10">
       <div className="relative">
@@ -76,7 +81,7 @@ const HomeReview = () => {
                 recommend this service for anyone looking for a reliable and
                 thorough car wash!
               </p>
-              <HomeAddReviewModal />
+              {user?.role === "user" && <HomeAddReviewModal />}
             </div>
             <Swiper
               modules={[Pagination, A11y]}
@@ -115,23 +120,27 @@ const HomeReview = () => {
               ))}
             </Swiper>
             <div className="flex justify-center mt-4 sm:mt-6">
-              <Link to="/reviews" className="w-fit">
-                <Button
-                  className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
-                  disabled={false}
-                >
+              <Button
+                className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
+                disabled={user?.userEmail ? false : true}
+              >
+                <Link to="/reviews" className="w-fit">
                   All Reviews
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
-        {/* <div className="bg-review-login-overlay container h-full absolute top-0 left-2/4 -translate-x-2/4 flex flex-col justify-center items-center gap-4 p-5">
-              <p className="text-gray-900 font-semibold text-lg text-center">If want to place your review or view all review, please login.</p>
-              <Link to="/">
-                <Button className="text-sm font-medium py-2 h-fit">Login</Button>
-              </Link>
-        </div> */}
+        {!user?.userEmail && (
+          <div className="bg-review-login-overlay container h-full absolute top-0 left-2/4 -translate-x-2/4 flex flex-col justify-center items-center gap-4 p-5">
+            <p className="text-gray-900 font-semibold text-lg text-center">
+              If want to place your review or view all review, please login.
+            </p>
+            <Link to="/">
+              <Button className="text-sm font-medium py-2 h-fit">Login</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

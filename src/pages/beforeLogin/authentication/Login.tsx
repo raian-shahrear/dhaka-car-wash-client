@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks";
+import { useLoginMutation } from "@/redux/api/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,15 +18,40 @@ const Login = () => {
   } = useForm();
 
   const [showPass, setShowPass] = useState(false);
+  const reduxDespatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
 
-  const handleLogin = (data) => {
+  const handleLogin = async (data) => {
     if (isValid || !isSubmitting) {
-      const newLogin = {
-        email: data.email,
-        password: data.password,
-      };
-      console.log(newLogin);
-      navigate("/", { replace: true });
+      try {
+        const newLogin = {
+          email: data.email,
+          password: data.password,
+        };
+        const userData = await login(newLogin).unwrap();
+        const loggedInUser = {
+          _id: userData?.data?._id,
+          email: userData?.data?.email,
+          name: userData?.data?.name,
+          phone: userData?.data?.phone,
+          address: userData?.data?.address,
+          role: userData?.data?.role,
+          profile: userData?.data?.profile
+        }
+        if(userData.success){
+          // const user = verifyToken(userData.token);
+          reduxDespatch(
+            setUser({
+              user: loggedInUser,
+              token: userData.token,
+            })
+          );
+          toast.success("Logged in successfully!");
+          navigate("/", { replace: true });
+        }
+      } catch (err: any) {
+        toast.error(err.data.message);
+      }
     }
   };
   return (
@@ -43,17 +72,11 @@ const Login = () => {
                   type="email"
                   className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
                   placeholder="Enter email"
-                  {...register("email", {
-                    required: "This field is required",
-                    pattern: {
-                      value: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
-                      message: "Please set email in right pattern",
-                    },
-                  })}
+                  {...register("email", { required: true })}
                 />
                 {errors.email && (
                   <span className="text-xs text-red-600 mt-[2px] inline-block">
-                    {errors.email?.message}
+                    This field is required
                   </span>
                 )}
               </div>

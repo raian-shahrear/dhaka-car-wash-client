@@ -1,4 +1,5 @@
 import profileImg from "@/assets/icon/user-avatar.png";
+import { useAppSelector } from "@/redux/hooks";
 import { FaHouseUser, FaPhoneAlt, FaUserCog, FaUserEdit } from "react-icons/fa";
 import { GrServices } from "react-icons/gr";
 import { HiUserGroup } from "react-icons/hi";
@@ -7,14 +8,14 @@ import { Link } from "react-router-dom";
 
 
 const Dashboard = () => {
-  const role: string = "admin";
+  const { user } = useAppSelector((state) => state.auth);
 
   return (
     <div>
       <h1 className="text-lg sm:text-xl font-bold">Dashboard</h1>
       <div
         className={`mt-10 grid sm:grid-cols-2 ${
-          role === "admin"
+          user?.role === "admin"
             ? "lg:grid-cols-[300px_auto_auto_auto] 2xl:grid-cols-[minmax(300px,auto)_minmax(300px,auto)_minmax(300px,auto)_minmax(300px,auto)] gap-5"
             : "lg:grid-cols-[minmax(300px,auto)_minmax(300px,auto)] gap-5 lg:gap-10"
         }`}
@@ -23,16 +24,16 @@ const Dashboard = () => {
           <div className="grid grid-cols-[auto_20px] gap-4 p-4 border-b border-gray-600">
             <div className="flex items-center gap-3">
               <img
-                src={profileImg}
+                src={user?.profile ? user?.profile : profileImg}
                 alt="user"
                 className="w-14 h-14 rounded-full border-2 border-red-300 p-1"
               />
               <div className="text-white max-w-[70%]">
                 <p className="mb-1 text-base font-semibold text-ellipsis overflow-hidden whitespace-nowrap">
-                  Golzer M. Chowdhury
+                  {user?.name}
                 </p>
                 <p className="text-xs text-ellipsis overflow-hidden whitespace-nowrap">
-                  golzer@gmail.com
+                  {user?.email}
                 </p>
               </div>
             </div>
@@ -50,7 +51,7 @@ const Dashboard = () => {
                 </span>
                 <span>Role :</span>
               </p>
-              <p>Admin</p>
+              <p>{user?.role}</p>
             </div>
             <div className="text-white text-sm grid grid-cols-[90px_auto] items-start">
               <p className="flex items-center gap-1">
@@ -59,7 +60,7 @@ const Dashboard = () => {
                 </span>
                 <span>Phone :</span>
               </p>
-              <p>+8801643876521</p>
+              <p>{user?.phone}</p>
             </div>
             <div className="text-white text-sm grid grid-cols-[90px_auto] items-start">
               <p className="flex items-center gap-1">
@@ -68,11 +69,11 @@ const Dashboard = () => {
                 </span>
                 <span>Address :</span>
               </p>
-              <p>30/A, Road-11, Banani, Dhaka</p>
+              <p>{user?.address}</p>
             </div>
           </div>
         </section>
-        {role === "admin" && (
+        {user?.role === "admin" && (
           <section className="border border-gray-100 bg-gray-50 shadow-md px-4 py-10 rounded-lg text-center flex items-center justify-center flex-col gap-4">
             <p className="text-3xl -mb-2">
               <GrServices />
@@ -88,7 +89,7 @@ const Dashboard = () => {
           <p className="font-semibold text-gray-500">Total Bookings</p>
           <p className="text-2xl font-bold">0</p>
         </section>
-        {role === "admin" && (
+        {user?.role === "admin" && (
           <section className="border border-yellow-100 bg-yellow-50 shadow-md px-4 py-10 rounded-lg text-center flex items-center justify-center flex-col gap-4">
             <p className="text-3xl -mb-2">
               <HiUserGroup />

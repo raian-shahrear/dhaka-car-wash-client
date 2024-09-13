@@ -1,10 +1,12 @@
 import defaultImg from "@/assets/icon/user-avatar-black.png";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/hooks";
 import { FormEvent, useState } from "react";
 import { FaEdit, FaUserEdit } from "react-icons/fa";
 
 const MyAccount = () => {
-  const [preview, setPreview] = useState(defaultImg);
+  const { user } = useAppSelector((state) => state.auth);
+  const [preview, setPreview] = useState(user?.profile ? user?.profile : defaultImg);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -18,7 +20,7 @@ const MyAccount = () => {
       .value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement)
       .value,
-      profile: profileFile || defaultImg,
+      profile: profileFile || user?.profile,
       address: (form.elements.namedItem("address") as HTMLInputElement)
       .value
     };
@@ -70,7 +72,7 @@ const MyAccount = () => {
               <input
                 type="text"
                 name="name"
-                defaultValue="Golzer M. Chowdhury"
+                defaultValue={user?.name}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               />
             </div>
@@ -81,7 +83,7 @@ const MyAccount = () => {
               <input
                 type="email"
                 name="email"
-                defaultValue="golzer@example.com"
+                defaultValue={user?.email}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
                 disabled
               />
@@ -93,7 +95,7 @@ const MyAccount = () => {
               <input
                 type="text"
                 name="phone"
-                defaultValue="+8801643876521"
+                defaultValue={user?.phone}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               />
             </div>
@@ -103,7 +105,7 @@ const MyAccount = () => {
               </label>
               <textarea
                 name="address"
-                defaultValue="30/A, Road-11, Banani, Dhaka"
+                defaultValue={user?.address}
                 className="border border-gray-300 w-full min-h-20 px-2 py-1 text-sm rounded-sm"
               ></textarea>
             </div>

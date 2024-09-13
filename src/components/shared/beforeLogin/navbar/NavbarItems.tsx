@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Link, NavLink } from "react-router-dom";
 import NavbarUserDropdown from "./NavbarUserDropdown";
+import { useAppSelector } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+import { TUser } from "@/types";
 
 const NavbarItems = () => {
+  const { token } = useAppSelector((state) => state.auth);
+  let user;
+  if (token) {
+    user = verifyToken(token);
+  }
   return (
     <>
       <li>
@@ -48,22 +56,25 @@ const NavbarItems = () => {
         </NavLink>
       </li>
       <li className="flex items-center gap-2 relative">
-        <div className="hidden lg:block">
-          <NavbarUserDropdown />
-        </div>
-        <div className="flex items-center gap-2">
-          <Link to="/login">
-            <Button className="text-xs bg-red-300 text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-red-400">
-              Login
-            </Button>
-          </Link>
-          <span className="text-gray-300">|</span>
-          <Link to="/signup">
-            <Button className="text-xs bg-gray-900 text-white lg:bg-white lg:text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-gray-900 lg:hover:bg-white">
-              Sign up
-            </Button>
-          </Link>
-        </div>
+        {(user as TUser)?.userEmail ? (
+          <div className="hidden lg:block">
+            <NavbarUserDropdown />
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Link to="/login">
+              <Button className="text-xs bg-red-300 text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-red-400">
+                Login
+              </Button>
+            </Link>
+            <span className="text-gray-300">|</span>
+            <Link to="/signup">
+              <Button className="text-xs bg-gray-900 text-white lg:bg-white lg:text-gray-900 font-medium p-1 h-fit transition-all duration-300 hover:bg-gray-900 lg:hover:bg-white">
+                Sign up
+              </Button>
+            </Link>
+          </div>
+        )}
       </li>
     </>
   );

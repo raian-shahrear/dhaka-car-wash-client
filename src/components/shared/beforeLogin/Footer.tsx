@@ -1,29 +1,45 @@
-import { FaFacebookF, FaInstagram, FaPinterestP, FaTiktok, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaPinterestP,
+  FaTiktok,
+  FaTwitter,
+} from "react-icons/fa";
 import { HiOutlinePhone } from "react-icons/hi";
 import { MdOutlineMail } from "react-icons/md";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo/logo.png";
+import { useAppSelector } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+import { TUser } from "@/types";
 
 const Footer = () => {
+  const { token } = useAppSelector((state) => state.auth);
+  let user;
+  if (token) {
+    user = verifyToken(token);
+  }
   return (
     <footer className=" bg-gray-900 pt-6 text-white">
       <div className="container mx-auto px-4 lg:px-10 xxl:px-0 py-5">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-x-20 gap-y-10">
           <div>
-          <a
-            href="/"
-            aria-label="Dhaka Car Wash"
-            title="Dhaka Car Wash"
-            className="inline-flex items-center gap-2"
-          >
-            <img src={logo} alt="logo" width="50px" />
-            <span className="text-lg md:text-xl font-bold tracking-wide flex flex-col">
-              <span className="uppercase text-red-300 -mb-[2px]">Dhaka</span>
-              <span className="text-xs font-medium text-white">Car Wash</span>
-            </span>
-          </a>
+            <a
+              href="/"
+              aria-label="Dhaka Car Wash"
+              title="Dhaka Car Wash"
+              className="inline-flex items-center gap-2"
+            >
+              <img src={logo} alt="logo" width="50px" />
+              <span className="text-lg md:text-xl font-bold tracking-wide flex flex-col">
+                <span className="uppercase text-red-300 -mb-[2px]">Dhaka</span>
+                <span className="text-xs font-medium text-white">Car Wash</span>
+              </span>
+            </a>
             <p className="mt-3 text-sm">
-              From Road Dust to Showroom Shine - Experience the Ultimate Car Wash That Cleans, Protects, and Transforms Your Ride with Every Visit!
+              From Road Dust to Showroom Shine - Experience the Ultimate Car
+              Wash That Cleans, Protects, and Transforms Your Ride with Every
+              Visit!
             </p>
           </div>
           <div>
@@ -54,14 +70,16 @@ const Footer = () => {
                     Comparison
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/reviews"
-                    className="text-sm transition-all duration-300 hover:underline"
-                  >
-                    Reviews
-                  </Link>
-                </li>
+                {(user as TUser)?.userEmail && (
+                  <li>
+                    <Link
+                      to="/reviews"
+                      className="text-sm transition-all duration-300 hover:underline"
+                    >
+                      Reviews
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>

@@ -54,7 +54,7 @@ const ServiceComparison = () => {
             options={serviceOptions}
             className="basic-multi-select"
             classNamePrefix="select"
-            placeholder="Select categories"
+            placeholder="Select 2 or more services to compare"
             onChange={(selectedOptions) => setSelectService(selectedOptions)}
           />
         </div>
