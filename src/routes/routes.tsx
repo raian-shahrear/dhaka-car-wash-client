@@ -20,6 +20,8 @@ import MyBookings from "@/pages/afterLogin/userManagement/myBookings/MyBookings"
 import ServiceComparison from "@/pages/beforeLogin/services/ServiceComparison";
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedRouteForUser from "./ProtectedRouteForUser";
+import MyReview from "@/pages/afterLogin/userManagement/myReview/MyReview";
+import ClientReview from "@/pages/afterLogin/userManagement/ClientReview";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +120,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRouteForUser role="user">
             <MyBookings />
+          </ProtectedRouteForUser>
+        ),
+      },
+      {
+        path: "user-management/client-reviews",
+        element: (
+          <ProtectedRouteForUser role="admin">
+            <ClientReview />
+          </ProtectedRouteForUser>
+        ),
+      },
+      {
+        path: "user-management/my-reviews",
+        element: (
+          <ProtectedRouteForUser role="user">
+            <MyReview />
           </ProtectedRouteForUser>
         ),
       },

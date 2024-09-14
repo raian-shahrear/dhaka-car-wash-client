@@ -179,6 +179,44 @@ const Sidebar = ({ setControlSidebar, controlSidebar }) => {
                   </NavLink>
                 </li>
               )}
+              {(user as TUser)?.role === "admin" && (
+                <li>
+                  <NavLink
+                    to="user-management/client-reviews"
+                    aria-label="Client Reviews"
+                    title="Client Reviews"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flex items-center gap-2 w-full text-sm font-medium tracking-wide text-gray-900 transition-all duration-300 hover:text-gray-900"
+                        : "flex items-center gap-2 w-full text-sm font-medium tracking-wide text-gray-500 transition-all duration-300 hover:text-gray-900"
+                    }
+                  >
+                    <span className="text-xs">
+                      <FaRegCircle />
+                    </span>
+                    <span>Client Reviews</span>
+                  </NavLink>
+                </li>
+              )}
+              {(user as TUser)?.role === "user" && (
+                <li>
+                  <NavLink
+                    to="user-management/my-reviews"
+                    aria-label="My Reviews"
+                    title="My Reviews"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flex items-center gap-2 w-full text-sm font-medium tracking-wide text-gray-900 transition-all duration-300 hover:text-gray-900"
+                        : "flex items-center gap-2 w-full text-sm font-medium tracking-wide text-gray-500 transition-all duration-300 hover:text-gray-900"
+                    }
+                  >
+                    <span className="text-xs">
+                      <FaRegCircle />
+                    </span>
+                    <span>My Reviews</span>
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </li>
           <li>

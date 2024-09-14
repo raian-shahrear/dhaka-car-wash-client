@@ -21,9 +21,8 @@ const Signup = () => {
         email: data.email,
         password: data.password,
         phone: data.phone,
-        profile: data.profile[0],
-        role: "user",
         address: data.address,
+        profile: data.profile[0],
       };
       console.log(newUser);
       // navigate("/login", { replace: true });

@@ -22,7 +22,6 @@ const HomeAddReviewModal = () => {
   const handleReviewSubmit = async (data) => {
     if (isValid || !isSubmitting) {
       const newReview = {
-        userId: "01",
         rating: data.rating,
         review: data.review,
       };
