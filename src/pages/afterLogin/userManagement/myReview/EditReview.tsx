@@ -8,20 +8,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateReviewMutation } from "@/redux/api/reviewApi";
+import Loading from "@/utils/Loading";
 import { FormEvent } from "react";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "sonner";
 
-const EditReview = () => {
-  const handleSubmit = (e: FormEvent) => {
+const EditReview = ({ review }: { review: any }) => {
+  const [updateReview, { isLoading }] = useUpdateReviewMutation();
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const updateService = {
-      userId: "01",
-      rating: (form.elements.namedItem("rating") as HTMLInputElement).value,
-      review: (form.elements.namedItem("review") as HTMLTextAreaElement).value,
-    };
-    console.log(updateService);
+    try {
+      const updateService = {
+        id: review?._id,
+        data: {
+          rating: Number((form.elements.namedItem("rating") as HTMLInputElement).value),
+          review: (form.elements.namedItem("review") as HTMLTextAreaElement)
+            .value,
+        },
+      };
+      const newData = await updateReview(updateService).unwrap();
+      if (newData?.success) {
+        toast.success("Review has been updated!");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -42,7 +61,7 @@ const EditReview = () => {
               <select
                 name="rating"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                defaultValue={"4"}
+                defaultValue={review?.rating}
               >
                 <option value="">Select Rating</option>
                 <option value="1">1</option>
@@ -60,9 +79,7 @@ const EditReview = () => {
                 name="review"
                 placeholder="Enter review"
                 className="border border-gray-300 w-full min-h-20 px-2 py-1 text-sm rounded-sm"
-                defaultValue={
-                  "Fantastic service! My car has never looked this clean. The staff was friendly, and they took great care to make sure every detail was perfect. I’ll definitely be coming back regularly. Highly recommended!"
-                }
+                defaultValue={review?.review}
               ></textarea>
             </div>
           </div>

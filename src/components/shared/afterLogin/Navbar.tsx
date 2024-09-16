@@ -1,10 +1,35 @@
 import userAvatar from "@/assets/icon/user-avatar-black.png";
+import { useGetAllUsersQuery } from "@/redux/api/authApi";
 import { useAppSelector } from "@/redux/hooks";
+import Loading from "@/utils/Loading";
+import { useEffect, useState } from "react";
 import { RiMenuFoldFill, RiMenuUnfoldFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ setControlSidebar, controlSidebar }) => {
+interface NavbarProps {
+  controlSidebar: boolean;
+  setControlSidebar: (value: boolean) => void;
+}
+
+const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
   const { user } = useAppSelector((state) => state.auth);
+  const { data: allUsers, isLoading: getUserLoading } =
+    useGetAllUsersQuery(undefined);
+  const loggedInUser = allUsers?.data?.find(
+    (info: any) => info?._id === user?._id
+  );
+
+  const [preview, setPreview] = useState(userAvatar);
+  useEffect(() => {
+    if (loggedInUser?.profile) {
+      setPreview(loggedInUser?.profile);
+    }
+  }, [loggedInUser]);
+
+  if (getUserLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="h-12 border-b px-5 flex justify-between items-center bg-white">
       <div
@@ -38,15 +63,15 @@ const Navbar = ({ setControlSidebar, controlSidebar }) => {
           className="cursor-pointer flex items-center gap-2"
         >
           <img
-            src={user?.profile ? user?.profile : userAvatar}
+            src={preview}
             alt="user"
-            className="w-8 h-8 rounded-full border-2"
+            className="w-8 h-8 rounded-full border-2 object-cover object-center"
           />
           <div className="flex flex-col gap-[2px] max-w-28">
             <p className="text-xs font-semibold text-ellipsis whitespace-nowrap overflow-hidden">
-              {user?.name}
+              {loggedInUser?.name}
             </p>
-            {user?.role === "admin" && (
+            {loggedInUser?.role === "admin" && (
               <p className="text-xs font-medium">Admin</p>
             )}
           </div>

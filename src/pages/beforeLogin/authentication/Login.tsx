@@ -1,19 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
+import Loading from "@/utils/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm();
 
@@ -21,7 +21,7 @@ const Login = () => {
   const reduxDespatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
-  const handleLogin = async (data) => {
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     if (isValid || !isSubmitting) {
       try {
         const newLogin = {
@@ -39,7 +39,6 @@ const Login = () => {
           profile: userData?.data?.profile
         }
         if(userData.success){
-          // const user = verifyToken(userData.token);
           reduxDespatch(
             setUser({
               user: loggedInUser,
@@ -50,10 +49,14 @@ const Login = () => {
           navigate("/", { replace: true });
         }
       } catch (err: any) {
-        toast.error(err.data.message);
+        toast.error(err?.data?.message);
       }
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="container mx-auto px-4 lg:px-10 xxl:px-0 py-20 min-h-screen flex justify-center items-center">
       <div className="w-full">

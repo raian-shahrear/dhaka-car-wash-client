@@ -1,33 +1,51 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { useSignUpMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
+import { getImageUrl } from "@/utils/getImageUrl";
+import Loading from "@/utils/Loading";
 
 const Signup = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm();
   const [showPass, setShowPass] = useState(false);
+  // from redux to register user
+  const [signUpUser, { isLoading }] = useSignUpMutation();
 
-  const handleSignup = (data) => {
+  const handleSignup: SubmitHandler<FieldValues> = async (data) => {
     if (isValid || !isSubmitting) {
-      const newUser = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        address: data.address,
-        profile: data.profile[0],
-      };
-      console.log(newUser);
-      // navigate("/login", { replace: true });
+      try {
+        const imageUrl = await getImageUrl(data.profile[0]);
+        // Create a new user
+        const newUser = {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+          address: data.address,
+          profile: imageUrl,
+        };
+        const newData = await signUpUser(newUser).unwrap();
+        if (newData?.success) {
+          toast.success("User has been registered!");
+          navigate("/login", { replace: true });
+        }
+      } catch (err: any) {
+        toast.error(err?.data?.message);
+      }
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="container mx-auto px-4 lg:px-10 xxl:px-0 py-20 min-h-screen flex justify-center items-center">
       <div className="w-full">
@@ -63,17 +81,11 @@ const Signup = () => {
                     type="email"
                     className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
                     placeholder="Enter email"
-                    {...register("email", {
-                      required: "This field is required",
-                      pattern: {
-                        value: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
-                        message: "Please set email in right pattern",
-                      },
-                    })}
+                    {...register("email", { required: true })}
                   />
                   {errors.email && (
                     <span className="text-xs text-red-600 mt-[2px] inline-block">
-                      {errors.email?.message}
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -109,7 +121,7 @@ const Signup = () => {
                   </div>
                   {errors.password ? (
                     <span className="text-xs text-red-600 mt-[2px] inline-block">
-                      {errors.password?.message}
+                      {(errors as any).password?.message}
                     </span>
                   ) : (
                     <small className="text-xs text-gray-600 mt-1 inline-block">

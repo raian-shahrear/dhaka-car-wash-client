@@ -7,8 +7,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import ChangeUserRole from "./ChangeUserRole";
+import { useGetAllUsersQuery } from "@/redux/api/authApi";
+import Loading from "@/utils/Loading";
 
 const Users = () => {
+  const { data: allUsers, isLoading: getUserLoading } =
+    useGetAllUsersQuery(undefined);
+
+  if (getUserLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
@@ -27,42 +35,23 @@ const Users = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell className="font-bold">Mr. Admin</TableCell>
-            <TableCell className="font-medium">
-              <div className="max-w-48 text-ellipsis overflow-hidden">
-                admin10@example.com
-              </div>
-            </TableCell>
-            <TableCell className="font-medium">234-567-8901</TableCell>
-            <TableCell className="font-medium">
-              456 Elm St, Metropolis
-            </TableCell>
-            <TableCell className="font-medium">admin</TableCell>
-            <TableCell>
-              <ChangeUserRole />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell className="font-bold">Moye G. Bright</TableCell>
-            <TableCell className="font-medium">
-              <div className="max-w-48 text-ellipsis overflow-hidden">
-                moye.bright@example.com
-              </div>
-            </TableCell>
-            <TableCell className="font-medium">234-567-8901</TableCell>
-            <TableCell className="font-medium">
-              456 Elm St, Metropolis
-            </TableCell>
-            <TableCell className="font-medium">user</TableCell>
-            <TableCell>
-              <ChangeUserRole />
-            </TableCell>
-          </TableRow>
+          {allUsers?.data?.map((user: any, idx: number) => (
+            <TableRow key={user?._id}>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
+              <TableCell className="font-bold">{user?.name}</TableCell>
+              <TableCell className="font-medium">
+                <div className="max-w-48 text-ellipsis overflow-hidden">
+                  {user?.email}
+                </div>
+              </TableCell>
+              <TableCell className="font-medium">{user?.phone}</TableCell>
+              <TableCell className="font-medium">{user?.address}</TableCell>
+              <TableCell className="font-medium">{user?.role}</TableCell>
+              <TableCell>
+                <ChangeUserRole user={user} />
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

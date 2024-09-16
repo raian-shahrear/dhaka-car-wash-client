@@ -10,16 +10,33 @@ import {
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "sonner";
 import EditReview from "./EditReview";
+import { useAppSelector } from "@/redux/hooks";
+import { useDeleteReviewMutation, useGetSingleReviewQuery } from "@/redux/api/reviewApi";
+import Loading from "@/utils/Loading";
 
 const MyReview = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  const { data: reviews, isLoading } = useGetSingleReviewQuery(user?._id);
+  const [deleteReview, { isLoading: isReviewDeleted }] = useDeleteReviewMutation();
+
+  const reviewDate = reviews?.data[0]?.createdAt
+    .split("T")[0]
+    .split("-")
+    .join("/");
+
   // delete item
-  const handleDeleteItem = (item: Record<string, unknown>) => {
+  const handleDeleteItem = async(id: Record<string, unknown>) => {
     const isConfirmed = confirm("Are you sure to delete?");
     if (isConfirmed) {
-      console.log(item._id);
+      const deleteData = await deleteReview(id).unwrap();
+      console.log(deleteData)
       toast.warning("Review has been deleted!");
     }
   };
+
+  if (isLoading || isReviewDeleted) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
@@ -36,26 +53,25 @@ const MyReview = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell className="font-medium">2024/09/21</TableCell>
-            <TableCell className="font-medium">
-              Fantastic service! My car has never looked this clean. The staff
-              was friendly, and they took great...
-            </TableCell>
-            <TableCell className="font-medium">4</TableCell>
-            <TableCell>
-              <div className="flex gap-2">
-                <EditReview />
-                <Button
-                  className="px-1 py-2 h-fit bg-red-700 rounded"
-                  onClick={() => handleDeleteItem({ _id: "01" })}
-                >
-                  <RiDeleteBin5Line />
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
+          {reviews?.data?.map((review: any, idx: number) => (
+            <TableRow key={review?._id}>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
+              <TableCell className="font-medium">{reviewDate}</TableCell>
+              <TableCell className="font-medium">{review?.review?.length > 110 ? review?.review?.slice(0, 109)+'...' : review?.review}</TableCell>
+              <TableCell className="font-medium">{review?.rating}</TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <EditReview review={review} />
+                  <Button
+                    className="px-1 py-2 h-fit bg-red-700 rounded"
+                    onClick={() => handleDeleteItem(review?._id)}
+                  >
+                    <RiDeleteBin5Line />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -8,19 +8,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateUserRoleMutation } from "@/redux/api/authApi";
+import Loading from "@/utils/Loading";
 import { FormEvent } from "react";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "sonner";
 
-const ChangeUserRole = () => {
-  const handleSubmit = (e: FormEvent) => {
+const ChangeUserRole = ({ user }: any) => {
+  const [userUpdate, { isLoading }] = useUpdateUserRoleMutation();
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const updateRole = {
-      role: (form.elements.namedItem("role") as HTMLInputElement)
-        .value,
-    };
-    console.log(updateRole);
+
+    try {
+      const updateRole = {
+        id: user?._id,
+        data: {
+          role: (form.elements.namedItem("role") as HTMLInputElement).value,
+        },
+      };
+      const newData = await userUpdate(updateRole).unwrap();
+      if (newData?.success) {
+        toast.success("User role has been updated!");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -41,6 +60,7 @@ const ChangeUserRole = () => {
               <select
                 name="role"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
+                defaultValue={user?.role}
               >
                 <option value="">Select role</option>
                 <option value="user">User</option>

@@ -7,27 +7,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useCreateReviewMutation } from "@/redux/api/reviewApi";
+import Loading from "@/utils/Loading";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const HomeAddReviewModal = () => {
+  const [createReview, { isLoading }] = useCreateReviewMutation();
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleReviewSubmit = async (data) => {
+  const handleReviewSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (isValid || !isSubmitting) {
-      const newReview = {
-        rating: data.rating,
-        review: data.review,
-      };
-      console.log(newReview);
+      try {
+        const newReview = {
+          rating: Number(data.rating),
+          review: data.review,
+        };
+        const newData = await createReview(newReview).unwrap();
+        if (newData?.success) {
+          toast.success("Review has been created!");
+        }
+      } catch (err: any) {
+        toast.error(err?.data?.message);
+      }
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>

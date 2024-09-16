@@ -14,7 +14,12 @@ import {
 } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 
-const Sidebar = ({ setControlSidebar, controlSidebar }) => {
+interface NavbarProps {
+  controlSidebar: boolean;
+  setControlSidebar: (value: boolean) => void;
+}
+
+const Sidebar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
   const reduxDispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.auth);
   let user;

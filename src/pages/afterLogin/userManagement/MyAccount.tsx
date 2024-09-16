@@ -1,39 +1,80 @@
 import defaultImg from "@/assets/icon/user-avatar-black.png";
 import { Button } from "@/components/ui/button";
+import {
+  useGetAllUsersQuery,
+  useUpdateUserMutation,
+} from "@/redux/api/authApi";
 import { useAppSelector } from "@/redux/hooks";
-import { FormEvent, useState } from "react";
+import { getImageUrl } from "@/utils/getImageUrl";
+import Loading from "@/utils/Loading";
+import { FormEvent, useEffect, useState } from "react";
 import { FaEdit, FaUserEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const MyAccount = () => {
+  const navigate = useNavigate();
+  const [userUpdate, { isLoading }] = useUpdateUserMutation();
   const { user } = useAppSelector((state) => state.auth);
-  const [preview, setPreview] = useState(user?.profile ? user?.profile : defaultImg);
+  const { data: allUsers, isLoading: getUserLoading } =
+    useGetAllUsersQuery(undefined);
+  const loggedInUser = allUsers?.data?.find(
+    (info: any) => info?._id === user?._id
+  );
 
-  const handleSubmit = (e: FormEvent) => {
+  const [preview, setPreview] = useState(defaultImg);
+  useEffect(() => {
+    if (loggedInUser?.profile) {
+      setPreview(loggedInUser?.profile);
+    }
+  }, [loggedInUser]);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
 
-    const profileInput = form.elements.namedItem("profileImg") as HTMLInputElement;
+    const profileInput = form.elements.namedItem(
+      "profileImg"
+    ) as HTMLInputElement;
     const profileFile = profileInput.files && profileInput.files[0];
 
-    const updateUser = {
-      name: (form.elements.namedItem("name") as HTMLInputElement)
-      .value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement)
-      .value,
-      profile: profileFile || user?.profile,
-      address: (form.elements.namedItem("address") as HTMLInputElement)
-      .value
-    };
-    console.log(updateUser);
+    try {
+      let imageUrl = loggedInUser?.profile;
+      if (profileFile) {
+        imageUrl = await getImageUrl(profileFile);
+      }
+
+      const updateUser = {
+        id: user?._id,
+        data: {
+          name: (form.elements.namedItem("name") as HTMLInputElement).value,
+          phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+          profile: imageUrl,
+          address: (form.elements.namedItem("address") as HTMLInputElement)
+            .value,
+        },
+      };
+      const newData = await userUpdate(updateUser).unwrap();
+      if (newData?.success) {
+        toast.success("User has been updated!");
+        navigate("/dashboard/index", { replace: true });
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message);
+    }
   };
 
   // Update the preview image when a new file is selected
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setPreview(URL.createObjectURL(file)); 
+      setPreview(URL.createObjectURL(file));
     }
   };
+
+  if (isLoading || getUserLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>
@@ -57,7 +98,7 @@ const MyAccount = () => {
               <img
                 src={preview}
                 alt="profile"
-                className="w-16 h-16 rounded-full border-2 border-gray-300 p-1"
+                className="w-16 h-16 rounded-full border-2 border-gray-300 p-1 object-cover object-center"
               />
               <span className="text-gray-900 text-lg absolute top-0 right-0 bg-white">
                 <FaEdit />
@@ -72,7 +113,7 @@ const MyAccount = () => {
               <input
                 type="text"
                 name="name"
-                defaultValue={user?.name}
+                defaultValue={loggedInUser?.name}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               />
             </div>
@@ -83,7 +124,7 @@ const MyAccount = () => {
               <input
                 type="email"
                 name="email"
-                defaultValue={user?.email}
+                defaultValue={loggedInUser?.email}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
                 disabled
               />
@@ -95,7 +136,7 @@ const MyAccount = () => {
               <input
                 type="text"
                 name="phone"
-                defaultValue={user?.phone}
+                defaultValue={loggedInUser?.phone}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
               />
             </div>
@@ -105,7 +146,7 @@ const MyAccount = () => {
               </label>
               <textarea
                 name="address"
-                defaultValue={user?.address}
+                defaultValue={loggedInUser?.address}
                 className="border border-gray-300 w-full min-h-20 px-2 py-1 text-sm rounded-sm"
               ></textarea>
             </div>

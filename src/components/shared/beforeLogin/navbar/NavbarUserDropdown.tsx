@@ -1,8 +1,10 @@
 import userAvatar from "@/assets/icon/user-avatar.png";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { useGetAllUsersQuery } from "@/redux/api/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useState } from "react";
+import Loading from "@/utils/Loading";
+import { useEffect, useState } from "react";
 import { FaUserGear } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 import { MdOutlineLogout, MdOutlineSpaceDashboard } from "react-icons/md";
@@ -10,13 +12,28 @@ import { Link } from "react-router-dom";
 
 const NavbarUserDropdown = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { data: allUsers, isLoading: getUserLoading } =
+    useGetAllUsersQuery(undefined);
+  const loggedInUser = allUsers?.data?.find(
+    (info: any) => info?._id === user?._id
+  );
+  const [preview, setPreview] = useState(userAvatar);
+  useEffect(() => {
+    if (loggedInUser?.profile) {
+      setPreview(loggedInUser?.profile);
+    }
+  }, [loggedInUser]);
+
+  const [controlDropdown, setControlDropdown] = useState(false);
   const reduxDispatch = useAppDispatch();
 
   const handleLogout = () => {
     reduxDispatch(logout());
   };
 
-  const [controlDropdown, setControlDropdown] = useState(false);
+  if (getUserLoading) {
+    return <Loading />;
+  }
   return (
     <div className="relative">
       <div
@@ -24,9 +41,9 @@ const NavbarUserDropdown = () => {
         onClick={() => setControlDropdown(!controlDropdown)}
       >
         <img
-          src={user?.profile ? user?.profile : userAvatar}
+          src={preview}
           alt="user"
-          className="w-8 h-8 rounded-full border-2"
+          className="w-8 h-8 rounded-full border-2 object-cover object-center"
         />
       </div>
       <div
@@ -36,12 +53,12 @@ const NavbarUserDropdown = () => {
       >
         <div className="p-3 relative">
           <div className="w-44">
-            <p className="text-sm font-semibold">{user?.name}</p>
+            <p className="text-sm font-semibold">{loggedInUser?.name}</p>
             <p
               className="text-xs text-ellipsis overflow-hidden"
-              title={user?.email}
+              title={loggedInUser?.email}
             >
-              {user?.email}
+              {loggedInUser?.email}
             </p>
           </div>
           <span
