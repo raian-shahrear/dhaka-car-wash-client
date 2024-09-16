@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { ServicesFilterProps } from "@/types";
+import { TServicesFilterProps } from "@/types";
 import { FC } from "react";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
-const ServiceFilter: FC<ServicesFilterProps> = ({
-    setSearch,
-    setFilterByMinPrice,
-    setFilterByMaxPrice,
-    setSortByPrice
-  }) => {
+const ServiceFilter: FC<TServicesFilterProps> = ({
+  setSearchItem,
+  setFilterByMinPrice,
+  setFilterByMaxPrice,
+  setSortByPrice,
+}) => {
   // reset filter
   const handleAllFilterToReset = () => {
-    setSearch("");
+    setSearchItem("");
     setFilterByMinPrice("");
     setFilterByMaxPrice("");
     setSortByPrice("");
@@ -26,7 +26,7 @@ const ServiceFilter: FC<ServicesFilterProps> = ({
             id="search"
             className="border border-gray-300 w-full h-9 px-2 py-2 text-sm rounded-sm placeholder:text-black outline-none"
             placeholder="Search by name"
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearchItem(e.target.value)}
           />
         </div>
         <div className="flex gap-2">
@@ -49,7 +49,7 @@ const ServiceFilter: FC<ServicesFilterProps> = ({
           <select
             name="sorting"
             id="sorting"
-            className="border border-gray-300 w-full h-9 px-1 py-2 text-sm rounded-sm"
+            className="border border-gray-300 w-full h-9 px-1 py-1 text-sm rounded-sm"
             onChange={(e) => setSortByPrice(e.target.value)}
           >
             <option value="">Sort by price</option>

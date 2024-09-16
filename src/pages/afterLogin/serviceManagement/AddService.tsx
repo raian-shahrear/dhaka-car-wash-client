@@ -9,29 +9,47 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { getImageUrl } from "@/utils/getImageUrl";
+import { useCreateServiceMutation } from "@/redux/api/serviceApi";
+import Loading from "@/utils/Loading";
 
 const AddService = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
+  const [createService, { isLoading }] = useCreateServiceMutation();
 
-  const handleAddService = async (data) => {
+  const handleAddService: SubmitHandler<FieldValues> = async (data) => {
     if (isValid || !isSubmitting) {
-      const newService = {
-        name: data.title,
-        description: data.description,
-        price: data.price,
-        duration: data.duration,
-        isDeleted: false,
-      };
-      console.log(newService);
+      try {
+        const imageUrl = await getImageUrl(data.image[0]);
+        const newService = {
+          name: data.title,
+          description: data.description,
+          price: Number(data.price),
+          duration: Number(data.duration),
+          image: imageUrl,
+        };
+        const newData = await createService(newService).unwrap();
+        if (newData?.success) {
+          toast.success("Service has been created!");
+          reset();
+        }
+      } catch (err: any) {
+        toast.error(err?.data?.message);
+      }
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
@@ -70,7 +88,7 @@ const AddService = () => {
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
-                Service cost<span className="text-red-600">*</span>
+                Service cost (in num)<span className="text-red-600">*</span>
               </label>
               <input
                 type="number"
@@ -95,6 +113,21 @@ const AddService = () => {
                 {...register("duration", { required: true })}
               />
               {errors.duration && (
+                <span className="text-xs text-red-600 mt-[2px] inline-block">
+                  This field is required
+                </span>
+              )}
+            </div>
+            <div>
+              <label className="text-xs font-semibold mb-1 inline-block">
+                Service Image<span className="text-red-600">*</span>
+              </label>
+              <input
+                type="file"
+                className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
+                {...register("image", { required: true })}
+              />
+              {errors.image && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
                   This field is required
                 </span>

@@ -19,6 +19,7 @@ const HomeAddReviewModal = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,6 +34,7 @@ const HomeAddReviewModal = () => {
         const newData = await createReview(newReview).unwrap();
         if (newData?.success) {
           toast.success("Review has been created!");
+          reset();
         }
       } catch (err: any) {
         toast.error(err?.data?.message);

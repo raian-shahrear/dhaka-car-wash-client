@@ -1,12 +1,14 @@
-import serviceImg from "@/assets/home/services/Car Disinfecting.jpg";
 import { Button } from "@/components/ui/button";
 import { FormEvent, useState } from "react";
 import { FaRegClock } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import defaultImg from "@/assets/icon/default_image.jpg";
+import { convertToHoursAndMinutes } from "@/utils/convertTime";
 
 const ServiceDetails = () => {
   const navigate = useNavigate();
+  const { state: serviceData } = useLocation();
   const [chooseSlot, setChooseSlot] = useState("");
 
   const currentDate = new Date().toISOString().split("T")[0];
@@ -14,40 +16,35 @@ const ServiceDetails = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    navigate(`/booking`, { state: chooseSlot });
+    navigate(`/booking`, { state: {chooseSlot, serviceData} });
   };
   return (
     <div className="pt-10 lg:pt-32 min-h-[67vh]">
       <div className="container mx-auto p-4 lg:p-10 shadow-lg">
         <section className="h-full lg:h-[500px] mb-10">
           <img
-            src={serviceImg}
+            src={serviceData?.image ? serviceData?.image : defaultImg}
             alt="service"
             className=" w-full h-full object-cover object-center rounded-lg"
           />
         </section>
         <section>
-          <p className="font-bold text-xl sm:text-2xl mb-3">Car Disinfecting</p>
+          <p className="font-bold text-xl sm:text-2xl mb-3">
+            {serviceData?.name}
+          </p>
           <p className="text-sm sm:text-base mb-3">
-            Car disinfecting goes beyond the standard cleaning to sanitize every
-            surface inside your vehicle, ensuring a safe and healthy
-            environment. This service uses EPA-approved disinfectants to kill
-            99.9% of bacteria, viruses, and allergens on high-touch areas such
-            as the steering wheel, door handles, gear shifters, and seats. It’s
-            ideal for those concerned about hygiene, especially after
-            transporting pets, children, or passengers. The process also
-            includes deep cleaning air vents to remove airborne contaminants,
-            providing peace of mind with every drive. A disinfected car not only
-            looks clean but also promotes health and well-being for everyone
-            inside.
+            {serviceData?.description}
           </p>
           <p className="text-sm sm:text-base mb-3 flex items-center gap-1">
-            <span>Service cost:</span> <span className="font-bold">$50</span>
+            <span>Service cost:</span>{" "}
+            <span className="font-bold">${serviceData?.price}</span>
           </p>
           <p className="text-sm sm:text-base flex items-center gap-1 mb-3">
             <span>Duration: </span>
             <FaRegClock />
-            <span className="font-bold">60 min</span>
+            <span className="font-bold">
+              {convertToHoursAndMinutes(serviceData?.duration)}
+            </span>
           </p>
           <form onSubmit={handleSubmit}>
             <div className="grid sm:grid-cols-2 gap-5 w-full lg:w-3/4">
@@ -56,14 +53,16 @@ const ServiceDetails = () => {
                 className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
                 min={selectDate}
                 defaultValue={selectDate}
-                onChange={(e)=> setSelectDate(e.target.value)}
+                onChange={(e) => setSelectDate(e.target.value)}
               />
               <select
                 className="border border-gray-300 h-9 px-2 py-1 text-sm rounded-sm"
-                onChange={(e)=> setChooseSlot(e.target.value)}
+                onChange={(e) => setChooseSlot(e.target.value)}
               >
                 <option value="">Select slot</option>
-                <option value="01" disabled={true}>12:00 - 13:00</option>
+                <option value="01" disabled={true}>
+                  12:00 - 13:00
+                </option>
                 <option value="02">13:00 - 14:00</option>
                 <option value="03">14:00 - 15:00</option>
               </select>

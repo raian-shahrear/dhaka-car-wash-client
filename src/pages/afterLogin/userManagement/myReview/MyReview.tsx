@@ -29,8 +29,9 @@ const MyReview = () => {
     const isConfirmed = confirm("Are you sure to delete?");
     if (isConfirmed) {
       const deleteData = await deleteReview(id).unwrap();
-      console.log(deleteData)
-      toast.warning("Review has been deleted!");
+      if(deleteData.success){
+        toast.warning("Review has been deleted!");
+      }
     }
   };
 
@@ -57,7 +58,7 @@ const MyReview = () => {
             <TableRow key={review?._id}>
               <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell className="font-medium">{reviewDate}</TableCell>
-              <TableCell className="font-medium">{review?.review?.length > 110 ? review?.review?.slice(0, 109)+'...' : review?.review}</TableCell>
+              <TableCell className="font-medium">{review?.review?.length > 100 ? review?.review?.slice(0, 99)+'...' : review?.review}</TableCell>
               <TableCell className="font-medium">{review?.rating}</TableCell>
               <TableCell>
                 <div className="flex gap-2">

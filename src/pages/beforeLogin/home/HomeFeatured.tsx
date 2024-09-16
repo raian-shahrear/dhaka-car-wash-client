@@ -1,11 +1,21 @@
-import feature1 from "@/assets/home/services/Exterior Wash.jpg";
-import feature2 from "@/assets/home/services/Clay Bar Treatment.jpg";
-import feature3 from "@/assets/home/services/Engine Bay Cleaning.jpg";
-import feature4 from "@/assets/home/services/Paint Sealant.jpg";
+import defaultImg from "@/assets/icon/default_image.jpg";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { useGetFeaturedServicesQuery } from "@/redux/api/serviceApi";
+import Loading from "@/utils/Loading";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HomeFeatured = () => {
+  const navigate = useNavigate();
+  const { data: services, isLoading } = useGetFeaturedServicesQuery(undefined);
+
+  const handleRoute = (data: any)=>{
+    navigate(`/services/${data?._id}`, { state: data });
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <section className="container mx-auto px-4 lg:px-10 pt-10 mb-10">
       <div className="text-center mb-10">
@@ -23,94 +33,37 @@ const HomeFeatured = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        <div className="relative rounded-md transition-all duration-300 hover:shadow-xl h-full">
-          <img src={feature1} alt="feature" className="w-full h-[300px] sm:h-[250px] md:h-auto lg:h-[300px] 2xl:h-auto rounded-md object-cover object-center" />
-          <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
-          <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
-            <div className="text-center p-10 lg:p-5 xl:p-10">
-              <p className="text-xl font-semibold text-red-300">
-                Exterior Wash
-              </p>
-              <p className="mt-6 text-sm text-white">
-                Quick wash with spot-free rinse and hand dry. Quick wash with
-                spot-free rinse and hand dry.
-              </p>
-              <Link
-                to="/services/1"
-                className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
-              >
-                <span>View Details</span>
-                <IoIosArrowForward />
-              </Link>
+        {services?.data?.map((service: any) => (
+          <div
+            key={service?._id}
+            className="relative rounded-md transition-all duration-300 hover:shadow-xl h-full"
+          >
+            <img
+              src={service?.image ? service?.image : defaultImg}
+              alt="feature"
+              className="w-full h-[300px] sm:h-[250px] md:h-auto lg:h-[300px] 2xl:h-auto rounded-md object-cover object-center"
+            />
+            <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
+            <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
+              <div className="text-center p-10 lg:p-5 xl:p-10">
+                <p className="text-xl font-semibold text-red-300">
+                  {service?.name}
+                </p>
+                <p className="mt-6 text-sm text-white">
+                  {service?.description?.length > 80
+                    ? service?.description.slice(0, 79) + "..."
+                    : service?.description}
+                </p>
+                <div className="flex justify-center items-center mt-8">
+                  <Button type="button" onClick={()=>handleRoute(service)}  className="bg-transparent p-0 h-fit w-fit text-white text-xs flex items-center gap-1 transition-all duration-300 hover:gap-2 hover:bg-transparent">
+                    <span>View Details</span>
+                    <IoIosArrowForward />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="relative rounded-md transition-all duration-300 hover:shadow-xl h-full">
-          <img src={feature2} alt="feature" className="w-full h-[300px] sm:h-[250px] md:h-auto lg:h-[300px] 2xl:h-auto rounded-md object-cover object-center" />
-          <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
-          <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
-            <div className="text-center p-10 lg:p-5 xl:p-10">
-              <p className="text-xl font-semibold text-red-300">
-                Clay Bar Treatment
-              </p>
-              <p className="mt-6 text-sm text-white">
-                Quick wash with spot-free rinse and hand dry. Quick wash with
-                spot-free rinse and hand dry.
-              </p>
-              <Link
-                to="/services/1"
-                className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
-              >
-                <span>View Details</span>
-                <IoIosArrowForward />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="relative rounded-md transition-all duration-300 hover:shadow-xl h-full">
-          <img src={feature3} alt="feature" className="w-full h-[300px] sm:h-[250px] md:h-auto lg:h-[300px] 2xl:h-auto rounded-md object-cover object-center" />
-          <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
-          <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
-            <div className="text-center p-10 lg:p-5 xl:p-10">
-              <p className="text-xl font-semibold text-red-300">
-                Engine Bay Cleaning
-              </p>
-              <p className="mt-6 text-sm text-white">
-                Quick wash with spot-free rinse and hand dry. Quick wash with
-                spot-free rinse and hand dry.
-              </p>
-              <Link
-                to="/services/1"
-                className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
-              >
-                <span>View Details</span>
-                <IoIosArrowForward />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="relative rounded-md transition-all duration-300 hover:shadow-xl h-full">
-          <img src={feature4} alt="feature" className="w-full h-[300px] sm:h-[250px] md:h-auto lg:h-[300px] 2xl:h-auto rounded-md object-cover object-center" />
-          <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
-          <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
-            <div className="text-center p-10 lg:p-5 xl:p-10">
-              <p className="text-xl font-semibold text-red-300">
-                Paint Sealant
-              </p>
-              <p className="mt-6 text-sm text-white">
-                Quick wash with spot-free rinse and hand dry. Quick wash with
-                spot-free rinse and hand dry.
-              </p>
-              <Link
-                to="/services/1"
-                className="mt-10 text-white text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:gap-2"
-              >
-                <span>View Details</span>
-                <IoIosArrowForward />
-              </Link>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );
