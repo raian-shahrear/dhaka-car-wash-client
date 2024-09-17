@@ -12,7 +12,7 @@ const Booking = () => {
   const navigate = useNavigate();
   const { state: data } = useLocation();
   const { user } = useAppSelector((state) => state.auth);
-  const { data: allUsers, isLoading: getUserLoading } =
+  const { data: allUsers, isLoading: isGetUserLoading } =
     useGetAllUsersQuery(undefined);
   const loggedInUser = allUsers?.data?.find(
     (info: any) => info?._id === user?._id
@@ -46,7 +46,7 @@ const Booking = () => {
     }
   };
 
-  if (getUserLoading) {
+  if (isGetUserLoading) {
     return <Loading />;
   }
   return (

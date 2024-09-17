@@ -9,12 +9,22 @@ import {
 import ChangeUserRole from "./ChangeUserRole";
 import { useGetAllUsersQuery } from "@/redux/api/authApi";
 import Loading from "@/utils/Loading";
+import { useState } from "react";
+import { filterFun } from "@/utils/filter";
+import Pagination from "@/components/shared/pagination/Pagination";
 
 const Users = () => {
-  const { data: allUsers, isLoading: getUserLoading } =
-    useGetAllUsersQuery(undefined);
+  const [dataLimit, setDataLimit] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  // get filter data from the utility
+  const filterObj = filterFun({
+    dataLimit,
+    pageCount,
+  });
+  const { data: allUsers, isLoading: isGetUserLoading } =
+    useGetAllUsersQuery(filterObj);
 
-  if (getUserLoading) {
+  if (isGetUserLoading) {
     return <Loading />;
   }
   return (
@@ -48,12 +58,21 @@ const Users = () => {
               <TableCell className="font-medium">{user?.address}</TableCell>
               <TableCell className="font-medium">{user?.role}</TableCell>
               <TableCell>
-                <ChangeUserRole user={user} />
+                <ChangeUserRole userInfo={user} />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <section className="pt-10 mb-10">
+        <Pagination
+          data={allUsers}
+          dataLimit={dataLimit}
+          setDataLimit={setDataLimit}
+          pageCount={pageCount}
+          setPageCount={setPageCount}
+        />
+      </section>
     </div>
   );
 };

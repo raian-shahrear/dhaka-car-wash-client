@@ -9,13 +9,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useUpdateUserRoleMutation } from "@/redux/api/authApi";
+import { useAppSelector } from "@/redux/hooks";
 import Loading from "@/utils/Loading";
 import { FormEvent } from "react";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 
-const ChangeUserRole = ({ user }: any) => {
+const ChangeUserRole = ({ userInfo }: any) => {
   const [userUpdate, { isLoading }] = useUpdateUserRoleMutation();
+  const { user } = useAppSelector((state) => state.auth);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ const ChangeUserRole = ({ user }: any) => {
 
     try {
       const updateRole = {
-        id: user?._id,
+        id: userInfo?._id,
         data: {
           role: (form.elements.namedItem("role") as HTMLInputElement).value,
         },
@@ -43,7 +45,7 @@ const ChangeUserRole = ({ user }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="px-1 py-2 h-fit rounded w-fit">
+        <Button className="px-1 py-2 h-fit rounded w-fit" disabled={user?._id === userInfo?._id}>
           <FaEdit />
         </Button>
       </DialogTrigger>
@@ -60,7 +62,7 @@ const ChangeUserRole = ({ user }: any) => {
               <select
                 name="role"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                defaultValue={user?.role}
+                defaultValue={userInfo?.role}
               >
                 <option value="">Select role</option>
                 <option value="user">User</option>

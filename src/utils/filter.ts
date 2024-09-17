@@ -7,28 +7,28 @@ type TFilterObj = {
   maxPrice?: number;
   sort?: string;
   limit?: number;
-  page?: number
+  page?: number;
 };
 
-type TProductFilterFunProps = {
+type TFilterFunProps = {
   search?: string;
   filterByService?: TServiceOption[];
   filterByMinPrice?: string;
   filterByMaxPrice?: string;
-  sortByPrice?: string;
+  sortBy?: string;
   dataLimit?: number;
   pageCount?: number;
 };
 
-export const productFilterFun = ({
+export const filterFun = ({
   search,
   filterByService,
   filterByMinPrice,
   filterByMaxPrice,
-  sortByPrice,
+  sortBy,
   dataLimit,
-  pageCount
-}: TProductFilterFunProps): TFilterObj => {
+  pageCount,
+}: TFilterFunProps): TFilterObj => {
   const filterObj: TFilterObj = {};
 
   if (search) {
@@ -43,8 +43,8 @@ export const productFilterFun = ({
   if (filterByMaxPrice) {
     filterObj.maxPrice = parseFloat(filterByMaxPrice);
   }
-  if (sortByPrice) {
-    filterObj.sort = sortByPrice;
+  if (sortBy) {
+    filterObj.sort = sortBy;
   }
   if (dataLimit) {
     filterObj.limit = dataLimit;

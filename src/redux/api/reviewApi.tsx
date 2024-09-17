@@ -21,10 +21,11 @@ const reviewApi = baseApi.injectEndpoints({
       providesTags: ["review"],
     }),
     getSingleReview: builder.query({
-      query: () => {
+      query: (queries) => {
         return {
           url: "/reviews/my-reviews",
           method: "GET",
+          params: queries,
         };
       },
       providesTags: ["review"],

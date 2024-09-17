@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const { data: allUsers, isLoading: getUserLoading } =
+  const { data: allUsers, isLoading: isGetUserLoading } =
     useGetAllUsersQuery(undefined);
   const loggedInUser = allUsers?.data?.find(
     (info: any) => info?._id === user?._id
@@ -25,7 +25,7 @@ const Dashboard = () => {
     }
   }, [loggedInUser]);
 
-  if (getUserLoading) {
+  if (isGetUserLoading) {
     return <Loading />;
   }
   return (

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { TUser } from "@/types";
 import { useGetAllReviewsQuery } from "@/redux/api/reviewApi";
 import Loading from "@/utils/Loading";
+import { filterFun } from "@/utils/filter";
 
 const swiperSlideBreakpoints = {
   320: {
@@ -30,7 +31,10 @@ type TUserProps = {
 };
 
 const HomeReview = ({ user }: TUserProps) => {
-  const { data: allReviews, isLoading } = useGetAllReviewsQuery(undefined);
+  const filterObj = filterFun({
+    dataLimit: 3
+  });
+  const { data: allReviews, isLoading } = useGetAllReviewsQuery(filterObj);
 
   if (isLoading) {
     return <Loading />;
@@ -67,7 +71,7 @@ const HomeReview = ({ user }: TUserProps) => {
               breakpoints={swiperSlideBreakpoints}
               pagination={{ clickable: true }}
             >
-              {allReviews?.data?.slice(0, 3)?.map((review: any) => (
+              {allReviews?.data?.map((review: any) => (
                 <SwiperSlide key={review?._id}>
                   <div className="p-5 shadow-lg rounded-md mt-1 mb-12 bg-review-background">
                     <div className="flex flex-col items-center gap-5">

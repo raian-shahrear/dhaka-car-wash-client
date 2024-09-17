@@ -1,3 +1,4 @@
+import Pagination from "@/components/shared/pagination/Pagination";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -11,25 +12,30 @@ import {
   useDeleteReviewMutation,
   useGetAllReviewsQuery,
 } from "@/redux/api/reviewApi";
+import { filterFun } from "@/utils/filter";
 import Loading from "@/utils/Loading";
+import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "sonner";
 
 const ClientReview = () => {
-  const { data: reviews, isLoading } = useGetAllReviewsQuery(undefined);
+  const [dataLimit, setDataLimit] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  // get filter data from the utility
+  const filterObj = filterFun({
+    dataLimit,
+    pageCount,
+  });
+  const { data: reviews, isLoading } = useGetAllReviewsQuery(filterObj);
+
   const [deleteReview, { isLoading: isReviewDeleted }] =
     useDeleteReviewMutation();
-
-  const reviewDate = reviews?.data[0]?.createdAt
-    .split("T")[0]
-    .split("-")
-    .join("/");
 
   const handleDeleteItem = async (id: Record<string, unknown>) => {
     const isConfirmed = confirm("Are you sure to delete?");
     if (isConfirmed) {
       const deleteData = await deleteReview(id).unwrap();
-      if(deleteData.success){
+      if (deleteData.success) {
         toast.warning("Review has been deleted!");
       }
     }
@@ -58,9 +64,17 @@ const ClientReview = () => {
           {reviews?.data?.map((review: any, idx: number) => (
             <TableRow key={review?._id}>
               <TableCell className="font-medium">{idx + 1}</TableCell>
-              <TableCell className="font-medium">{review?.user?.name}</TableCell>
-              <TableCell className="font-medium">{reviewDate}</TableCell>
-              <TableCell className="font-medium">{review?.review?.length > 100 ? review?.review?.slice(0, 99)+'...' : review?.review}</TableCell>
+              <TableCell className="font-medium">
+                {review?.user?.name}
+              </TableCell>
+              <TableCell className="font-medium">
+                {review?.createdAt?.split("T")[0]?.split("-")?.join("/")}
+              </TableCell>
+              <TableCell className="font-medium">
+                {review?.review?.length > 100
+                  ? review?.review?.slice(0, 99) + "..."
+                  : review?.review}
+              </TableCell>
               <TableCell className="font-medium">{review?.rating}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
@@ -76,6 +90,15 @@ const ClientReview = () => {
           ))}
         </TableBody>
       </Table>
+      <section className="pt-10 mb-10">
+        <Pagination
+          data={reviews}
+          dataLimit={dataLimit}
+          setDataLimit={setDataLimit}
+          pageCount={pageCount}
+          setPageCount={setPageCount}
+        />
+      </section>
     </div>
   );
 };

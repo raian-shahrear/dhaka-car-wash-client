@@ -8,8 +8,8 @@ import Loading from "@/utils/Loading";
 import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
 import { convertToHoursAndMinutes } from "@/utils/convertTime";
 import useDebounce from "@/hooks/useDebounce";
-import { productFilterFun } from "./Service.util";
 import Pagination from "@/components/shared/pagination/Pagination";
+import { filterFun } from "@/utils/filter";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -20,17 +20,17 @@ const Services = () => {
   const [searchItem, setSearchItem] = useState("");
   const [filterByMinPrice, setFilterByMinPrice] = useState("");
   const [filterByMaxPrice, setFilterByMaxPrice] = useState("");
-  const [sortByPrice, setSortByPrice] = useState("");
+  const [sortBy, setSortBy] = useState("");
 
   // Use the debounce hook with a delay of 300ms
   const debouncedSearch = useDebounce(searchItem, 300);
 
   // get filter data from the utility
-  const filterObj = productFilterFun({
+  const filterObj = filterFun({
     search: debouncedSearch,
     filterByMinPrice,
     filterByMaxPrice,
-    sortByPrice,
+    sortBy,
     dataLimit,
     pageCount,
   });
@@ -50,7 +50,7 @@ const Services = () => {
         setSearchItem={setSearchItem}
         setFilterByMinPrice={setFilterByMinPrice}
         setFilterByMaxPrice={setFilterByMaxPrice}
-        setSortByPrice={setSortByPrice}
+        setSortBy={setSortBy}
       />
 
       <section className="pt-5">

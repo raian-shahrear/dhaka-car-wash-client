@@ -8,23 +8,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateSlotMutation } from "@/redux/api/slotApi";
+import Loading from "@/utils/Loading";
 import { FormEvent } from "react";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "sonner";
 
-const SlotStatusChange = () => {
-  const handleSubmit = (e: FormEvent) => {
+const SlotStatusChange = ({ slot }: { slot: any }) => {
+  const [slotUpdate, { isLoading }] = useUpdateSlotMutation();
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const updateSlotStatus = {
-      slotStatus: (form.elements.namedItem("slotStatus") as HTMLInputElement)
-        .value,
-    };
-    console.log(updateSlotStatus);
+
+    try {
+      const updateSlotStatus = {
+        id: slot?._id,
+        data: {
+          isBooked: (form.elements.namedItem("slotStatus") as HTMLInputElement)
+            .value,
+        },
+      };
+      const newData = await slotUpdate(updateSlotStatus).unwrap();
+      if (newData?.success) {
+        toast.success("Slot status has been updated!");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="px-1 py-2 h-fit rounded w-fit">
+        <Button
+          className="px-1 py-2 h-fit rounded w-fit"
+          disabled={slot?.isBooked === "booked"}
+        >
           <FaEdit />
         </Button>
       </DialogTrigger>
@@ -41,6 +64,7 @@ const SlotStatusChange = () => {
               <select
                 name="slotStatus"
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
+                defaultValue={slot?.isBooked}
               >
                 <option value="">Select status</option>
                 <option value="available">Available</option>

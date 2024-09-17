@@ -7,15 +7,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { getImageUrl } from "@/utils/getImageUrl";
-import { useCreateServiceMutation } from "@/redux/api/serviceApi";
+import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
+import { useCreateSlotMutation } from "@/redux/api/slotApi";
 import Loading from "@/utils/Loading";
+import { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FaPlus } from "react-icons/fa";
+import { toast } from "sonner";
 
-const AddService = () => {
+const AddSlot = () => {
   const {
     register,
     handleSubmit,
@@ -23,22 +23,34 @@ const AddService = () => {
     formState: { errors, isValid, isSubmitting },
   } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
-  const [createService, { isLoading }] = useCreateServiceMutation();
+  const [createSlot, { isLoading }] = useCreateSlotMutation();
+  const { data: allServices, isLoading: isGetAllServices } =
+    useGetAllServicesQuery(undefined);
+  const serviceOptions = allServices?.data?.map((option: any) => ({
+    value: option?._id,
+    label: option?.name,
+    duration: option?.duration,
+  }));
+
+  // current date
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}`;
 
   const handleAddService: SubmitHandler<FieldValues> = async (data) => {
     if (isValid || !isSubmitting) {
       try {
-        const imageUrl = await getImageUrl(data.image[0]);
-        const newService = {
-          name: data?.title,
-          description: data?.description,
-          price: Number(data?.price),
-          duration: Number(data?.duration),
-          image: imageUrl,
+        const newSlot = {
+          service: data?.service,
+          date: data?.date,
+          startTime: data?.startTime,
+          endTime: data?.endTime,
         };
-        const newData = await createService(newService).unwrap();
+        const newData = await createSlot(newSlot).unwrap();
         if (newData?.success) {
-          toast.success("Service has been created!");
+          toast.success("Slot has been created!");
           reset();
         }
       } catch (err: any) {
@@ -47,7 +59,7 @@ const AddService = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isGetAllServices) {
     return <Loading />;
   }
   return (
@@ -61,26 +73,31 @@ const AddService = () => {
           <span className="text-xs">
             <FaPlus />
           </span>
-          <span>Add Service</span>
+          <span>Add Slot</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] lg:max-w-[550px]">
         <form onSubmit={handleSubmit(handleAddService)}>
           <DialogHeader>
-            <DialogTitle>Add Service</DialogTitle>
+            <DialogTitle>Add Slot</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-1 gap-4 py-8">
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
-                Title<span className="text-red-600">*</span>
+                Service<span className="text-red-600">*</span>
               </label>
-              <input
-                type="text"
-                placeholder="Enter title"
-                className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                {...register("title", { required: true })}
-              />
-              {errors.title && (
+              <select
+                className="border border-gray-300 w-full h-9 px-1 py-1 text-sm rounded-sm"
+                {...register("service", { required: true })}
+              >
+                <option value="">Select service</option>
+                {serviceOptions?.map((option: any) => (
+                  <option key={option?.value} value={option?.value}>
+                    {option?.label}- {option?.duration}min
+                  </option>
+                ))}
+              </select>
+              {errors.service && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
                   This field is required
                 </span>
@@ -88,13 +105,13 @@ const AddService = () => {
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
-                Service cost (in num)<span className="text-red-600">*</span>
+                Date<span className="text-red-600">*</span>
               </label>
               <input
-                type="number"
-                placeholder="Enter cost"
+                type="date"
+                min={formattedDate}
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                {...register("price", { required: true })}
+                {...register("date", { required: true })}
               />
               {errors.price && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
@@ -104,15 +121,15 @@ const AddService = () => {
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
-                Duration (in min)<span className="text-red-600">*</span>
+                Start Time<span className="text-red-600">*</span>
               </label>
               <input
-                type="number"
-                placeholder="Enter duration"
+                type="text"
+                placeholder="example: 10:00 "
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                {...register("duration", { required: true })}
+                {...register("startTime", { required: true })}
               />
-              {errors.duration && (
+              {errors.startTime && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
                   This field is required
                 </span>
@@ -120,29 +137,15 @@ const AddService = () => {
             </div>
             <div>
               <label className="text-xs font-semibold mb-1 inline-block">
-                Service Image<span className="text-red-600">*</span>
+                End Time<span className="text-red-600">*</span>
               </label>
               <input
-                type="file"
+                type="text"
+                placeholder="example: 14:00 "
                 className="border border-gray-300 w-full h-9 px-2 py-1 text-sm rounded-sm"
-                {...register("image", { required: true })}
+                {...register("endTime", { required: true })}
               />
-              {errors.image && (
-                <span className="text-xs text-red-600 mt-[2px] inline-block">
-                  This field is required
-                </span>
-              )}
-            </div>
-            <div>
-              <label className="text-xs font-semibold mb-1 inline-block">
-                Description<span className="text-red-600">*</span>
-              </label>
-              <textarea
-                placeholder="Enter description"
-                className="border border-gray-300 w-full min-h-20 px-2 py-1 text-sm rounded-sm"
-                {...register("description", { required: true })}
-              ></textarea>
-              {errors.description && (
+              {errors.endTime && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
                   This field is required
                 </span>
@@ -163,4 +166,4 @@ const AddService = () => {
   );
 };
 
-export default AddService;
+export default AddSlot;

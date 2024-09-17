@@ -1,9 +1,19 @@
+import Pagination from "@/components/shared/pagination/Pagination";
 import { useGetAllReviewsQuery } from "@/redux/api/reviewApi";
+import { filterFun } from "@/utils/filter";
 import Loading from "@/utils/Loading";
+import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
 const Reviews = () => {
-  const { data: allReviews, isLoading } = useGetAllReviewsQuery(undefined);
+  const [dataLimit, setDataLimit] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  // get filter data from the utility
+  const filterObj = filterFun({
+    dataLimit,
+    pageCount,
+  });
+  const { data: allReviews, isLoading } = useGetAllReviewsQuery(filterObj);
 
   if (isLoading) {
     return <Loading />;
@@ -52,6 +62,16 @@ const Reviews = () => {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="pt-10 mb-10">
+        <Pagination
+          data={allReviews}
+          dataLimit={dataLimit}
+          setDataLimit={setDataLimit}
+          pageCount={pageCount}
+          setPageCount={setPageCount}
+        />
       </section>
     </div>
   );

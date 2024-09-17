@@ -19,25 +19,37 @@ import {
 } from "@/redux/api/serviceApi";
 import Loading from "@/utils/Loading";
 import { convertToHoursAndMinutes } from "@/utils/convertTime";
+import { useState } from "react";
+import { filterFun } from "@/utils/filter";
+import Pagination from "@/components/shared/pagination/Pagination";
 
 const ServiceManagement = () => {
-  const { data: services, isLoading } = useGetAllServicesQuery(undefined);
+  const [dataLimit, setDataLimit] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  // get filter data from the utility
+  const filterObj = filterFun({
+    dataLimit,
+    pageCount,
+  });
+  const { data: services, isLoading } = useGetAllServicesQuery(filterObj);
+
   const [deleteService, { isLoading: isServiceDeleted }] =
     useDeleteServiceMutation();
-    const [serviceUpdate, { isLoading: isServiceUpdated }] = useUpdateServiceMutation();
+  const [serviceUpdate, { isLoading: isServiceUpdated }] =
+    useUpdateServiceMutation();
 
   const handleDeleteItem = async (id: Record<string, unknown>) => {
     const isConfirmed = confirm("Are you sure to delete?");
     if (isConfirmed) {
       const deleteData = await deleteService(id).unwrap();
-      if(deleteData?.success){
+      if (deleteData?.success) {
         toast.warning("Service has been deleted!");
       }
     }
   };
 
   // update featured product
-  const handleFeaturedItem = async(checked: boolean, itemId: string) => {
+  const handleFeaturedItem = async (checked: boolean, itemId: string) => {
     const updateService = {
       id: itemId,
       data: {
@@ -45,7 +57,7 @@ const ServiceManagement = () => {
       },
     };
 
-    try{
+    try {
       const newData = await serviceUpdate(updateService).unwrap();
       if (newData?.success) {
         if (checked) {
@@ -54,10 +66,9 @@ const ServiceManagement = () => {
           toast.success("Removed from featured group.");
         }
       }
-    }catch (err: any) {
+    } catch (err: any) {
       toast.error(err?.data?.message);
     }
-    
   };
 
   if (isLoading || isServiceDeleted || isServiceUpdated) {
@@ -142,6 +153,15 @@ const ServiceManagement = () => {
           ))}
         </TableBody>
       </Table>
+      <section className="pt-10 mb-10">
+        <Pagination
+          data={services}
+          dataLimit={dataLimit}
+          setDataLimit={setDataLimit}
+          pageCount={pageCount}
+          setPageCount={setPageCount}
+        />
+      </section>
     </div>
   );
 };

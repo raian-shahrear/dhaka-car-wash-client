@@ -29,10 +29,19 @@ const serviceApi = baseApi.injectEndpoints({
       },
       providesTags: ["service"],
     }),
+    getServiceList: builder.query({
+      query: () => {
+        return {
+          url: "/services/service-list",
+          method: "GET",
+        };
+      },
+      providesTags: ["service"],
+    }),
     getSingleService: builder.query({
       query: (id) => {
         return {
-          url: `/services${id}`,
+          url: `/services/${id}`,
           method: "GET",
         };
       },
@@ -65,6 +74,7 @@ export const {
   useGetAllServicesQuery,
   useGetFeaturedServicesQuery,
   useGetSingleServiceQuery,
+  useGetServiceListQuery,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
 } = serviceApi;

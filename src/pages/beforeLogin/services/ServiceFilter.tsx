@@ -7,14 +7,14 @@ const ServiceFilter: FC<TServicesFilterProps> = ({
   setSearchItem,
   setFilterByMinPrice,
   setFilterByMaxPrice,
-  setSortByPrice,
+  setSortBy,
 }) => {
   // reset filter
   const handleAllFilterToReset = () => {
     setSearchItem("");
     setFilterByMinPrice("");
     setFilterByMaxPrice("");
-    setSortByPrice("");
+    setSortBy("");
   };
   return (
     <section className="mb-10">
@@ -50,7 +50,7 @@ const ServiceFilter: FC<TServicesFilterProps> = ({
             name="sorting"
             id="sorting"
             className="border border-gray-300 w-full h-9 px-1 py-1 text-sm rounded-sm"
-            onChange={(e) => setSortByPrice(e.target.value)}
+            onChange={(e) => setSortBy(e.target.value)}
           >
             <option value="">Sort by price</option>
             <option value="-price">High Price</option>
