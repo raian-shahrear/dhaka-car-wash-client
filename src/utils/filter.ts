@@ -3,6 +3,8 @@ import { TServiceOption } from "@/types";
 type TFilterObj = {
   searchTerm?: string;
   services?: string;
+  service?: string;
+  date?: string;
   minPrice?: number;
   maxPrice?: number;
   sort?: string;
@@ -13,6 +15,8 @@ type TFilterObj = {
 type TFilterFunProps = {
   search?: string;
   filterByService?: TServiceOption[];
+  serviceId?: string;
+  slotDate?: string;
   filterByMinPrice?: string;
   filterByMaxPrice?: string;
   sortBy?: string;
@@ -23,6 +27,8 @@ type TFilterFunProps = {
 export const filterFun = ({
   search,
   filterByService,
+  serviceId,
+  slotDate,
   filterByMinPrice,
   filterByMaxPrice,
   sortBy,
@@ -36,6 +42,12 @@ export const filterFun = ({
   }
   if (filterByService?.length) {
     filterObj.services = filterByService.map((val) => val.value).join(",");
+  }
+  if (serviceId) {
+    filterObj.service = serviceId;
+  }
+  if (slotDate) {
+    filterObj.date = slotDate;
   }
   if (filterByMinPrice) {
     filterObj.minPrice = parseFloat(filterByMinPrice);

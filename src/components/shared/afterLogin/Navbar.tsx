@@ -1,5 +1,6 @@
 import userAvatar from "@/assets/icon/user-avatar-black.png";
 import { useGetAllUsersQuery } from "@/redux/api/authApi";
+import { useGetUserUpcomingBookingsQuery } from "@/redux/api/bookingApi";
 import { useAppSelector } from "@/redux/hooks";
 import Loading from "@/utils/Loading";
 import { useEffect, useState } from "react";
@@ -18,15 +19,83 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
   const loggedInUser = allUsers?.data?.find(
     (info: any) => info?._id === user?._id
   );
+  const { data: bookings, isLoading } =
+    useGetUserUpcomingBookingsQuery(undefined);
 
   const [preview, setPreview] = useState(userAvatar);
+  const [nearestSlot, setNearestSlot] = useState<any>(null);
+  const [countdown, setCountdown] = useState("");
+  const [showCountdown, setShowCountdown] = useState(true);
+
   useEffect(() => {
     if (loggedInUser?.profile) {
       setPreview(loggedInUser?.profile);
     }
   }, [loggedInUser]);
 
-  if (isGetUserLoading) {
+  useEffect(() => {
+    if (bookings && bookings.data.length > 0) {
+      // Sort bookings to find the nearest one
+      const upcomingBookings = bookings.data.filter(
+        (booking: any) => !booking.isExpired
+      );
+
+      if (upcomingBookings.length > 0) {
+        upcomingBookings.sort((a: any, b: any) => {
+          const dateA = new Date(`${a.slot.date}T${a.slot.endTime}`);
+          const dateB = new Date(`${b.slot.date}T${b.slot.endTime}`);
+          return dateA.getTime() - dateB.getTime();
+        });
+
+        setNearestSlot(upcomingBookings[0]);
+      }
+    }
+  }, [bookings]);
+
+  useEffect(() => {
+    if (nearestSlot) {
+      const targetDate = new Date(
+        `${nearestSlot.slot.date}T${nearestSlot.slot.endTime}`
+      ).getTime();
+
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const difference = targetDate - now;
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+          // Construct the countdown string dynamically
+          let countdownString = "";
+          if (days > 0) countdownString += `${days}d:`;
+          if (hours > 0 || days > 0) countdownString += `${hours}h:`;
+          if (minutes > 0 || hours > 0 || days > 0)
+            countdownString += `${minutes}m:`;
+          countdownString += `${seconds}s`;
+
+          setCountdown(countdownString);
+        } else {
+          // Stop the countdown when it reaches zero and hide the countdown div
+          setCountdown("00d:00h:00m:00s");
+          setShowCountdown(false);
+          clearInterval(interval);
+        }
+      };
+
+      // Update the countdown every second
+      const interval = setInterval(updateCountdown, 1000);
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [nearestSlot]);
+
+  if (isLoading || isGetUserLoading) {
     return <Loading />;
   }
 
@@ -52,10 +121,13 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
         </span>
       </div>
       <div className="flex items-center gap-10">
-        {user?.role === "user" && (
-          <div className="hidden sm:flex flex-col text-center gap-[1px]">
-            <span className="text-xs font-medium">Next Booking Slot</span>
-            <span className="text-sm font-semibold">00:00:00</span>
+        {user?.role === "user" && showCountdown && nearestSlot && (
+          <div className="hidden md:flex flex-col text-center gap-[1px]">
+            <span className="text-xs">
+              Upcoming :{" "}
+              <span className="font-medium">{nearestSlot.service.name}</span>
+            </span>
+            <span className="text-sm font-semibold">{countdown}</span>
           </div>
         )}
         <Link

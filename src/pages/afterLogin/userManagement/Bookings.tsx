@@ -1,3 +1,4 @@
+import Pagination from "@/components/shared/pagination/Pagination";
 import {
   Table,
   TableBody,
@@ -6,8 +7,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetAllBookingsQuery } from "@/redux/api/bookingApi";
+import { filterFun } from "@/utils/filter";
+import Loading from "@/utils/Loading";
+import { useState } from "react";
 
 const Bookings = () => {
+  const [dataLimit, setDataLimit] = useState(10);
+  const [pageCount, setPageCount] = useState(1);
+  // get filter data from the utility
+  const filterObj = filterFun({
+    dataLimit,
+    pageCount,
+  });
+  const { data: bookings, isLoading } = useGetAllBookingsQuery(filterObj);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
@@ -17,6 +34,7 @@ const Bookings = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-12">SL</TableHead>
+            <TableHead>User</TableHead>
             <TableHead className="w-52">Service</TableHead>
             <TableHead>Booked Date</TableHead>
             <TableHead>Slot</TableHead>
@@ -26,51 +44,73 @@ const Bookings = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell className="font-bold">Car Disinfecting</TableCell>
-            <TableCell className="font-medium">2024-07-31</TableCell>
-            <TableCell className="font-medium">
-              <div className="flex flex-col gap-1 min-w-20">
-                <div>
-                  <span>Start : </span>
-                  <span>12:00</span>
+          {bookings?.data?.map((booking: any, idx: number) => (
+            <TableRow key={booking?._id}>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
+              <TableCell className="font-medium">
+                {booking?.customer?.name}
+              </TableCell>
+              <TableCell className="font-bold">
+                {booking?.service?.name}
+              </TableCell>
+              <TableCell className="font-medium">
+                {booking?.slot?.date}
+              </TableCell>
+              <TableCell className="font-medium">
+                <div className="flex flex-col gap-1 min-w-20">
+                  <div>
+                    <span>Start : </span>
+                    <span>{booking?.slot?.startTime}</span>
+                  </div>
+                  <div>
+                    <span>End : </span>
+                    <span>{booking?.slot?.endTime}</span>
+                  </div>
                 </div>
-                <div>
-                  <span>End : </span>
-                  <span>13:00</span>
+              </TableCell>
+              <TableCell className="font-medium">
+                ${booking?.service?.price}
+              </TableCell>
+              <TableCell className="font-medium">
+                {booking?.transactionId}
+              </TableCell>
+              <TableCell className="font-medium">
+                <div className="flex flex-col gap-1">
+                  <div className="grid grid-cols-[100px_auto]">
+                    <span>Type :</span>
+                    <span className="capitalize">{booking?.vehicleType}</span>
+                  </div>
+                  <div className="grid grid-cols-[100px_auto]">
+                    <span>Brand :</span>
+                    <span>{booking?.vehicleBrand}</span>
+                  </div>
+                  <div className="grid grid-cols-[100px_auto]">
+                    <span>Model :</span>
+                    <span>{booking?.vehicleModel}</span>
+                  </div>
+                  <div className="grid grid-cols-[100px_auto]">
+                    <span>Menu. Year :</span>
+                    <span>{booking?.manufacturingYear}</span>
+                  </div>
+                  <div className="grid grid-cols-[100px_auto]">
+                    <span>Reg. Plant :</span>
+                    <span>{booking?.registrationPlate}</span>
+                  </div>
                 </div>
-              </div>
-            </TableCell>
-            <TableCell className="font-medium">$50</TableCell>
-            <TableCell className="font-medium">Tx2345780765gg544</TableCell>
-            <TableCell className="font-medium">
-              <div className="flex flex-col gap-1">
-                <div className="grid grid-cols-[100px_auto]">
-                  <span>Type :</span>
-                  <span>Car</span>
-                </div>
-                <div className="grid grid-cols-[100px_auto]">
-                  <span>Brand :</span>
-                  <span>Toyota</span>
-                </div>
-                <div className="grid grid-cols-[100px_auto]">
-                  <span>Model :</span>
-                  <span>Camry</span>
-                </div>
-                <div className="grid grid-cols-[100px_auto]">
-                  <span>Menu. Year :</span>
-                  <span>2019</span>
-                </div>
-                <div className="grid grid-cols-[100px_auto]">
-                  <span>Reg. Plant :</span>
-                  <span>ABC123</span>
-                </div>
-              </div>
-            </TableCell>
-          </TableRow>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
+      <section className="pt-10 mb-10">
+        <Pagination
+          data={bookings}
+          dataLimit={dataLimit}
+          setDataLimit={setDataLimit}
+          pageCount={pageCount}
+          setPageCount={setPageCount}
+        />
+      </section>
     </div>
   );
 };

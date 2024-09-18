@@ -7,6 +7,7 @@ import Loading from "@/utils/Loading";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetAllUsersQuery } from "@/redux/api/authApi";
 import { toast } from "sonner";
+import { useCreateBookingMutation } from "@/redux/api/bookingApi";
 
 const Booking = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Booking = () => {
   const loggedInUser = allUsers?.data?.find(
     (info: any) => info?._id === user?._id
   );
-
+  const [createBooking, { isLoading }] = useCreateBookingMutation();
   const {
     register,
     handleSubmit,
@@ -36,17 +37,21 @@ const Booking = () => {
           vehicleModel: formInfo.model,
           manufacturingYear: Number(formInfo.year),
           registrationPlate: formInfo.registration,
+          transactionId: "TXID-2355363542",
         };
-        console.log(newBooking);
-        navigate("/booking-successful", { replace: true });
-        reset();
+        const newData = await createBooking(newBooking).unwrap();
+        if (newData?.success) {
+          toast.success("Service booked successfully!");
+          navigate("/booking-successful", { replace: true });
+          reset();
+        }
       } catch (err: any) {
         toast.error(err?.data?.message);
       }
     }
   };
 
-  if (isGetUserLoading) {
+  if (isLoading || isGetUserLoading) {
     return <Loading />;
   }
   return (
@@ -62,11 +67,18 @@ const Booking = () => {
           />
         </div>
         <div>
-          <div className="flex items-start gap-2 mb-5">
-            <p className="font-bold text-xl sm:text-2xl">
-              {data?.serviceData?.name}
+          <div className="mb-5">
+            <div className="flex items-start gap-2">
+              <p className="font-bold text-xl sm:text-2xl">
+                {data?.serviceData?.name}
+              </p>
+              <p className="font-semibold text-sm">
+                ${data?.serviceData?.price}
+              </p>
+            </div>
+            <p className="mt-1 text-sm font-medium text-gray-500 ">
+              Booking for: {data?.allSlots?.data[0]?.date}
             </p>
-            <p className="font-semibold text-sm">${data?.serviceData?.price}</p>
           </div>
           <form
             onSubmit={handleSubmit(handleBooking)}
@@ -97,11 +109,15 @@ const Booking = () => {
                 {...register("slot", { required: true })}
               >
                 <option value="">Select slot</option>
-                <option value="01" disabled={true}>
-                  12:00 - 13:00
-                </option>
-                <option value="02">13:00 - 14:00</option>
-                <option value="03">14:00 - 15:00</option>
+                {data?.allSlots?.data?.map((option: any) => (
+                  <option
+                    key={option?._id}
+                    value={option?._id}
+                    disabled={option?.isBooked !== "available"}
+                  >
+                    {option?.startTime} - {option?.endTime}
+                  </option>
+                ))}
               </select>
               {errors.slot && (
                 <span className="text-xs text-red-600 mt-[2px] inline-block">
