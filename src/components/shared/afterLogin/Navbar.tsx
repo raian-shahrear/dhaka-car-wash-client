@@ -27,12 +27,14 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
   const [countdown, setCountdown] = useState("");
   const [showCountdown, setShowCountdown] = useState(true);
 
+  // check user to get user profile image
   useEffect(() => {
     if (loggedInUser?.profile) {
       setPreview(loggedInUser?.profile);
     }
   }, [loggedInUser]);
 
+  // check upcoming booking
   useEffect(() => {
     if (bookings && bookings.data.length > 0) {
       // Sort bookings to find the nearest one
@@ -42,8 +44,8 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
 
       if (upcomingBookings.length > 0) {
         upcomingBookings.sort((a: any, b: any) => {
-          const dateA = new Date(`${a.slot.date}T${a.slot.endTime}`);
-          const dateB = new Date(`${b.slot.date}T${b.slot.endTime}`);
+          const dateA = new Date(`${a.slot.date}T${a.slot.startTime}`);
+          const dateB = new Date(`${b.slot.date}T${b.slot.startTime}`);
           return dateA.getTime() - dateB.getTime();
         });
 
@@ -52,10 +54,11 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
     }
   }, [bookings]);
 
+  // check booking slot to create counter
   useEffect(() => {
     if (nearestSlot) {
       const targetDate = new Date(
-        `${nearestSlot.slot.date}T${nearestSlot.slot.endTime}`
+        `${nearestSlot.slot.date}T${nearestSlot.slot.startTime}`
       ).getTime();
 
       const updateCountdown = () => {
@@ -72,7 +75,7 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
           );
           const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-          // Construct the countdown string dynamically
+          // Construct the countdown
           let countdownString = "";
           if (days > 0) countdownString += `${days}d:`;
           if (hours > 0 || days > 0) countdownString += `${hours}h:`;
@@ -82,7 +85,7 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
 
           setCountdown(countdownString);
         } else {
-          // Stop the countdown when it reaches zero and hide the countdown div
+          // Stop the countdown when it reaches zero
           setCountdown("00d:00h:00m:00s");
           setShowCountdown(false);
           clearInterval(interval);
@@ -91,7 +94,7 @@ const Navbar = ({ setControlSidebar, controlSidebar }: NavbarProps) => {
 
       // Update the countdown every second
       const interval = setInterval(updateCountdown, 1000);
-      return () => clearInterval(interval); // Cleanup on unmount
+      return () => clearInterval(interval);
     }
   }, [nearestSlot]);
 

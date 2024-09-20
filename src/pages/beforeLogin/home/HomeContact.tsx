@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import {
   FaFacebookF,
@@ -12,6 +13,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { toast } from "sonner";
 
 const HomeContact = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const [changeEmail, setChangeEmail] = useState("");
   const [changeMessage, setChangeMessage] = useState("");
 
@@ -101,6 +103,7 @@ const HomeContact = () => {
                 type="email"
                 name="email"
                 placeholder="Enter email"
+                defaultValue={user?.email}
                 className="border rou rounded text-sm p-2 w-full"
                 onChange={(e) => setChangeEmail(e.target.value)}
                 required

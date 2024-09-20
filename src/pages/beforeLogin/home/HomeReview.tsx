@@ -32,12 +32,14 @@ type TUserProps = {
 
 const HomeReview = ({ user }: TUserProps) => {
   const filterObj = filterFun({
-    dataLimit: 3
+    dataLimit: 3,
   });
   const { data: allReviews, isLoading } = useGetAllReviewsQuery(filterObj);
 
   if (isLoading) {
-    return <Loading />;
+    <div className="relative h-64">
+      <Loading />
+    </div>;
   }
 
   return (
@@ -65,54 +67,61 @@ const HomeReview = ({ user }: TUserProps) => {
               </p>
               {user?.role === "user" && <HomeAddReviewModal />}
             </div>
-            <Swiper
-              modules={[Pagination, A11y]}
-              spaceBetween={30}
-              breakpoints={swiperSlideBreakpoints}
-              pagination={{ clickable: true }}
-            >
-              {allReviews?.data?.map((review: any) => (
-                <SwiperSlide key={review?._id}>
-                  <div className="p-5 shadow-lg rounded-md mt-1 mb-12 bg-review-background">
-                    <div className="flex flex-col items-center gap-5">
-                      <div className="w-[80px]">
-                        <img
-                          src={review?.user?.profile}
-                          alt="client"
-                          className="w-[80px] h-[80px] rounded-full object-cover object-center border-2 border-gray-900"
-                        />
+            {allReviews?.data?.length && (
+              <>
+                <Swiper
+                  modules={[Pagination, A11y]}
+                  spaceBetween={30}
+                  breakpoints={swiperSlideBreakpoints}
+                  pagination={{ clickable: true }}
+                >
+                  {allReviews?.data?.map((review: any) => (
+                    <SwiperSlide key={review?._id}>
+                      <div className="p-5 shadow-lg rounded-md mt-1 mb-12 bg-review-background">
+                        <div className="flex flex-col items-center gap-5">
+                          <div className="w-[80px]">
+                            <img
+                              src={review?.user?.profile}
+                              alt="client"
+                              className="w-[80px] h-[80px] rounded-full object-cover object-center border-2 border-gray-900"
+                            />
+                          </div>
+                          <div className="flex gap-1">
+                            {Array.from(
+                              { length: review?.rating },
+                              (_, index) => (
+                                <span
+                                  key={index}
+                                  className="text-amber-400 text-base"
+                                >
+                                  <FaStar />
+                                </span>
+                              )
+                            )}
+                          </div>
+                          <div className="flex-1 text-center text-white">
+                            <p className="font-semibold mb-2">
+                              {review?.user?.name}
+                            </p>
+                            <p className="text-sm">{review?.review}</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex gap-1">
-                        {Array.from({ length: review?.rating }, (_, index) => (
-                          <span
-                            key={index}
-                            className="text-amber-400 text-base"
-                          >
-                            <FaStar />
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex-1 text-center text-white">
-                        <p className="font-semibold mb-2">
-                          {review?.user?.name}
-                        </p>
-                        <p className="text-sm">{review?.review}</p>
-                      </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <div className="flex justify-center mt-4 sm:mt-6">
-              <Button
-                className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
-                disabled={user?.userEmail ? false : true}
-              >
-                <Link to="/reviews" className="w-fit">
-                  All Reviews
-                </Link>
-              </Button>
-            </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+                <div className="flex justify-center mt-4 sm:mt-6">
+                  <Button
+                    className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
+                    disabled={user?.userEmail ? false : true}
+                  >
+                    <Link to="/reviews" className="w-fit">
+                      All Reviews
+                    </Link>
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
         {!user?.userEmail && (
@@ -120,7 +129,7 @@ const HomeReview = ({ user }: TUserProps) => {
             <p className="text-gray-900 font-semibold text-lg text-center">
               If want to place your review or view all review, please login.
             </p>
-            <Link to="/">
+            <Link to="/login">
               <Button className="text-sm font-medium py-2 h-fit">Login</Button>
             </Link>
           </div>

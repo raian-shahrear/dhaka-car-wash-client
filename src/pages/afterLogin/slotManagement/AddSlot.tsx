@@ -54,7 +54,7 @@ const AddSlot = () => {
           reset();
         }
       } catch (err: any) {
-        toast.error(err?.data?.message);
+        toast.error(err?.data?.message ? err?.data?.message : "Something went wrong!");
       }
     }
   };

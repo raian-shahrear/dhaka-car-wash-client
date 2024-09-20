@@ -42,7 +42,11 @@ const Services = () => {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="relative min-h-[67vh]">
+        <Loading />
+      </div>
+    );
   }
   return (
     <div className="container mx-auto px-4 lg:px-10 pt-20 lg:pt-32 min-h-[67vh]">
@@ -52,50 +56,59 @@ const Services = () => {
         setFilterByMaxPrice={setFilterByMaxPrice}
         setSortBy={setSortBy}
       />
-
-      <section className="pt-5">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-10">
-          {services?.data?.map((service: any) => (
-            <div key={service?._id} className="shadow-lg rounded-lg">
-              <img
-                src={service?.image ? service?.image : defaultImg}
-                alt="service"
-                className="w-full h-[250px] object-cover object-center rounded-tl-lg rounded-tr-lg"
-              />
-              <div className="px-5 pt-2 pb-5">
-                <p className="text-lg font-bold mb-2">{service?.name}</p>
-                <p className="text-sm mb-1">
-                  {service?.description?.length > 100
-                    ? service?.description?.slice(0, 99) + "..."
-                    : service?.description}
-                </p>
-                <p className="text-2xl font-bold mb-1">${service?.price}</p>
-                <p className="text-sm font-medium flex items-center gap-1 mb-5">
-                  <FaRegClock />
-                  <span>{convertToHoursAndMinutes(service?.duration)}</span>
-                </p>
-                <Button
-                  onClick={() => handleRoute(service)}
-                  className="py-1 h-fit text-sm flex items-center gap-1"
-                >
-                  <span>Details</span>
-                  <FaArrowRight />
-                </Button>
-              </div>
+      {services?.data?.length ? (
+        <>
+          <section className="pt-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-10">
+              {services?.data?.map((service: any) => (
+                <div key={service?._id} className="shadow-lg rounded-lg">
+                  <img
+                    src={service?.image ? service?.image : defaultImg}
+                    alt="service"
+                    className="w-full h-[250px] object-cover object-center rounded-tl-lg rounded-tr-lg"
+                  />
+                  <div className="px-5 pt-2 pb-5">
+                    <p className="text-lg font-bold mb-2">{service?.name}</p>
+                    <p className="text-sm mb-1">
+                      {service?.description?.length > 100
+                        ? service?.description?.slice(0, 99) + "..."
+                        : service?.description}
+                    </p>
+                    <p className="text-2xl font-bold mb-1">৳{service?.price}</p>
+                    <p className="text-sm font-medium flex items-center gap-1 mb-5">
+                      <FaRegClock />
+                      <span>{convertToHoursAndMinutes(service?.duration)}</span>
+                    </p>
+                    <Button
+                      onClick={() => handleRoute(service)}
+                      className="py-1 h-fit text-sm flex items-center gap-1"
+                    >
+                      <span>Details</span>
+                      <FaArrowRight />
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
 
-      <section className="pt-10 mb-10">
-        <Pagination
-          data={services}
-          dataLimit={dataLimit}
-          setDataLimit={setDataLimit}
-          pageCount={pageCount}
-          setPageCount={setPageCount}
-        />
-      </section>
+          <section className="pt-10 mb-10">
+            <Pagination
+              data={services}
+              dataLimit={dataLimit}
+              setDataLimit={setDataLimit}
+              pageCount={pageCount}
+              setPageCount={setPageCount}
+            />
+          </section>
+        </>
+      ) : (
+        <div className="flex justify-center items-center h-[30vh]">
+          <p className="text-xl sm:text-2xl text-gray-300 font-medium">
+            No service data found
+          </p>
+        </div>
+      )}
     </div>
   );
 };

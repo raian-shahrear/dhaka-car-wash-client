@@ -50,7 +50,11 @@ const ServiceComparison = () => {
   };
 
   if (isLoading || isAllServiceData) {
-    return <Loading />;
+    return (
+      <div className="relative min-h-[67vh]">
+        <Loading />
+      </div>
+    );
   }
   return (
     <div className="container mx-auto px-4 lg:px-10 pt-20 lg:pt-32 min-h-[67vh]">

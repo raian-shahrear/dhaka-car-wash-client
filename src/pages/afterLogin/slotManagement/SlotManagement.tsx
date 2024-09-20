@@ -21,6 +21,7 @@ const SlotManagement = () => {
   const filterObj = filterFun({
     dataLimit,
     pageCount,
+    sortBy:'isBooked'
   });
   const { data: slots, isLoading } = useGetAllSlotQuery(filterObj);
 
@@ -33,54 +34,78 @@ const SlotManagement = () => {
         <h1 className="text-lg sm:text-xl font-bold">Slot Management</h1>
         <AddSlot />
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-12">SL</TableHead>
-            <TableHead>Service</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Slot</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="w-36">Change Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {slots?.data?.map((slot: any, idx: number) => (
-            <TableRow key={slot?._id}>
-              <TableCell className="font-medium">{idx+1}</TableCell>
-              <TableCell className="font-bold">{slot?.service?.name}</TableCell>
-              <TableCell className="font-medium">{slot?.date}</TableCell>
-              <TableCell className="font-medium">
-                <div className="flex flex-col gap-1 min-w-20">
-                  <div>
-                    <span>Start : </span>
-                    <span>{slot?.startTime}</span>
-                  </div>
-                  <div>
-                    <span>End : </span>
-                    <span>{slot?.endTime}</span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell className="font-medium">
-                <span className={`${slot?.isBooked === 'available' ? "text-green-600" : slot?.isBooked === 'booked' ? "text-gray-600" : "text-red-600"}`}>{slot?.isBooked}</span>
-              </TableCell>
-              <TableCell>
-                <SlotStatusChange slot={slot} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <section className="pt-10 mb-10">
-        <Pagination
-          data={slots}
-          dataLimit={dataLimit}
-          setDataLimit={setDataLimit}
-          pageCount={pageCount}
-          setPageCount={setPageCount}
-        />
-      </section>
+      {slots?.data?.length ? (
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">SL</TableHead>
+                <TableHead>Service</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Slot</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="w-36">Change Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {slots?.data?.map((slot: any, idx: number) => (
+                <TableRow key={slot?._id}>
+                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-bold">
+                    {slot?.service?.name}
+                  </TableCell>
+                  <TableCell className="font-medium">{slot?.date}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex flex-col gap-1 min-w-20">
+                      <div>
+                        <span>Start : </span>
+                        <span>{slot?.startTime}</span>
+                      </div>
+                      <div>
+                        <span>End : </span>
+                        <span>{slot?.endTime}</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <span
+                      className={`${
+                        slot?.isBooked === "available"
+                          ? "text-green-600"
+                          : slot?.isBooked === "booked"
+                          ? "text-gray-900"
+                          : slot?.isBooked === "expired"
+                          ? "text-red-300"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {slot?.isBooked}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <SlotStatusChange slot={slot} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <section className="pt-10 mb-10">
+            <Pagination
+              data={slots}
+              dataLimit={dataLimit}
+              setDataLimit={setDataLimit}
+              pageCount={pageCount}
+              setPageCount={setPageCount}
+            />
+          </section>
+        </>
+      ) : (
+        <div className="flex justify-center items-center h-[30vh]">
+          <p className="text-xl sm:text-2xl text-gray-300 font-medium">
+            No slot data found
+          </p>
+        </div>
+      )}
     </div>
   );
 };

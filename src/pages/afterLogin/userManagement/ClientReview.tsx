@@ -49,56 +49,68 @@ const ClientReview = () => {
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mb-10">
         <h1 className="text-lg sm:text-xl font-bold">Client Review</h1>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-12">SL</TableHead>
-            <TableHead className="w-52">User</TableHead>
-            <TableHead className="w-52">Published At</TableHead>
-            <TableHead>Review</TableHead>
-            <TableHead className="w-32">Rating</TableHead>
-            <TableHead className="w-24">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {reviews?.data?.map((review: any, idx: number) => (
-            <TableRow key={review?._id}>
-              <TableCell className="font-medium">{idx + 1}</TableCell>
-              <TableCell className="font-medium">
-                {review?.user?.name}
-              </TableCell>
-              <TableCell className="font-medium">
-                {review?.createdAt?.split("T")[0]?.split("-")?.join("/")}
-              </TableCell>
-              <TableCell className="font-medium">
-                {review?.review?.length > 100
-                  ? review?.review?.slice(0, 99) + "..."
-                  : review?.review}
-              </TableCell>
-              <TableCell className="font-medium">{review?.rating}</TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Button
-                    className="px-1 py-2 h-fit bg-red-700 rounded"
-                    onClick={() => handleDeleteItem(review?._id)}
-                  >
-                    <RiDeleteBin5Line />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <section className="pt-10 mb-10">
-        <Pagination
-          data={reviews}
-          dataLimit={dataLimit}
-          setDataLimit={setDataLimit}
-          pageCount={pageCount}
-          setPageCount={setPageCount}
-        />
-      </section>
+      {reviews?.data?.length ? (
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">SL</TableHead>
+                <TableHead className="w-52">User</TableHead>
+                <TableHead className="w-52">Published At</TableHead>
+                <TableHead>Review</TableHead>
+                <TableHead className="w-32">Rating</TableHead>
+                <TableHead className="w-24">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {reviews?.data?.map((review: any, idx: number) => (
+                <TableRow key={review?._id}>
+                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-bold">
+                    {review?.user?.name}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {review?.createdAt?.split("T")[0]?.split("-")?.join("/")}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {review?.review?.length > 100
+                      ? review?.review?.slice(0, 99) + "..."
+                      : review?.review}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {review?.rating}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        className="px-1 py-2 h-fit bg-red-700 rounded"
+                        onClick={() => handleDeleteItem(review?._id)}
+                      >
+                        <RiDeleteBin5Line />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <section className="pt-10 mb-10">
+            <Pagination
+              data={reviews}
+              dataLimit={dataLimit}
+              setDataLimit={setDataLimit}
+              pageCount={pageCount}
+              setPageCount={setPageCount}
+            />
+          </section>
+        </>
+      ) : (
+        <div className="flex justify-center items-center h-[30vh]">
+          <p className="text-xl sm:text-2xl text-gray-300 font-medium">
+            No review data found
+          </p>
+        </div>
+      )}
     </div>
   );
 };

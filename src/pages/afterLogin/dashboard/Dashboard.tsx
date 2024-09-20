@@ -1,5 +1,11 @@
 import profileImg from "@/assets/icon/user-avatar.png";
 import { useGetAllUsersQuery } from "@/redux/api/authApi";
+import {
+  useGetAllBookingsQuery,
+  useGetUserExpiredBookingsQuery,
+  useGetUserUpcomingBookingsQuery,
+} from "@/redux/api/bookingApi";
+import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
 import { useAppSelector } from "@/redux/hooks";
 import Loading from "@/utils/Loading";
 import { useEffect, useState } from "react";
@@ -9,7 +15,6 @@ import { HiUserGroup } from "react-icons/hi";
 import { RiFileList3Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
-
 const Dashboard = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { data: allUsers, isLoading: isGetUserLoading } =
@@ -18,6 +23,15 @@ const Dashboard = () => {
     (info: any) => info?._id === user?._id
   );
 
+  const { data: expiredBookings, isLoading: isGetExpiredBooking } =
+    useGetUserExpiredBookingsQuery(undefined);
+  const { data: upcomingBookings, isLoading: isGetUpcomingBooking } =
+    useGetUserUpcomingBookingsQuery(undefined);
+  const { data: allBookings, isLoading: isGetAllBooking } =
+    useGetAllBookingsQuery(undefined);
+  const { data: allServices, isLoading: isGetAllServices } =
+    useGetAllServicesQuery(undefined);
+
   const [preview, setPreview] = useState(profileImg);
   useEffect(() => {
     if (loggedInUser?.profile) {
@@ -25,7 +39,13 @@ const Dashboard = () => {
     }
   }, [loggedInUser]);
 
-  if (isGetUserLoading) {
+  if (
+    isGetUserLoading ||
+    isGetExpiredBooking ||
+    isGetUpcomingBooking ||
+    isGetAllBooking ||
+    isGetAllServices
+  ) {
     return <Loading />;
   }
   return (
@@ -97,7 +117,7 @@ const Dashboard = () => {
               <GrServices />
             </p>
             <p className="font-semibold text-gray-500">Total Services</p>
-            <p className="text-2xl font-bold">0</p>
+            <p className="text-2xl font-bold">{allServices?.data?.length ? allServices?.data?.length : 0}</p>
           </section>
         )}
         <section className="border border-red-100 bg-red-50 shadow-md px-4 py-10 rounded-lg text-center flex items-center justify-center flex-col gap-4">
@@ -105,7 +125,11 @@ const Dashboard = () => {
             <RiFileList3Line />
           </p>
           <p className="font-semibold text-gray-500">Total Bookings</p>
-          <p className="text-2xl font-bold">0</p>
+          <p className="text-2xl font-bold">
+            {loggedInUser?.role === "user"
+              ? (expiredBookings?.data?.length || upcomingBookings?.data?.length) ? ((expiredBookings?.data?.length ? expiredBookings?.data?.length : 0) + (upcomingBookings?.data?.length ? upcomingBookings?.data?.length : 0)) : 0
+              : allBookings?.data?.length ? allBookings?.data?.length : 0}
+          </p>
         </section>
         {loggedInUser?.role === "admin" && (
           <section className="border border-yellow-100 bg-yellow-50 shadow-md px-4 py-10 rounded-lg text-center flex items-center justify-center flex-col gap-4">
@@ -113,7 +137,7 @@ const Dashboard = () => {
               <HiUserGroup />
             </p>
             <p className="font-semibold text-gray-500">Total Users</p>
-            <p className="text-2xl font-bold">{allUsers?.data?.length}</p>
+            <p className="text-2xl font-bold">{allUsers?.data?.length ? allUsers?.data?.length : 0}</p>
           </section>
         )}
       </div>

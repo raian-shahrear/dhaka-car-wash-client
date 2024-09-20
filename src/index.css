@@ -9,39 +9,6 @@ body{
   overflow-x: hidden;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-/* swiper */
-.swiper-pagination-bullet {
-  background: #d6d6d6;
-}
-.selectable-day {
-  background: #fca5a5;
-  border-radius: 50%;
-}
-
-/* react-day-picker */
-.rdp-today:not(.rdp-outside) {
-  color: #111827;
-  font-weight: 700;
-}
-.rdp-chevron {
-  fill: #111827;
-}
-.rdp-selected .rdp-day_button {
-  border-color: #111827;
-  font-weight: 700;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

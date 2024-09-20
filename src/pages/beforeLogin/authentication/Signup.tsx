@@ -38,7 +38,7 @@ const Signup = () => {
           navigate("/login", { replace: true });
         }
       } catch (err: any) {
-        toast.error(err?.data?.message);
+        toast.error(err?.data?.message ? err?.data?.message : "Something went wrong!");
       }
     }
   };

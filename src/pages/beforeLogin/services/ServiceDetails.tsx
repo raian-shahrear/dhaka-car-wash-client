@@ -26,7 +26,7 @@ const ServiceDetails = () => {
   const [chooseDate, setChooseDate] = useState("");
   const [isSlotExist, setIsSlotExist] = useState(false);
   const [selectDate, setSelectDate] = useState<Date | undefined>(undefined);
-  
+
   // isUpcomingSlotExist
   useEffect(() => {
     if (slotsByService?.data?.length) {
@@ -75,7 +75,11 @@ const ServiceDetails = () => {
   };
 
   if (isLoading || isGetAllSlot) {
-    return <Loading />;
+    return (
+      <div className="relative min-h-[67vh]">
+        <Loading />
+      </div>
+    );
   }
   return (
     <div className="pt-10 lg:pt-32 min-h-[67vh]">
@@ -96,7 +100,7 @@ const ServiceDetails = () => {
           </p>
           <p className="text-sm sm:text-base mb-3 flex items-center gap-1">
             <span>Service cost:</span>{" "}
-            <span className="font-bold">${serviceData?.price}</span>
+            <span className="font-bold">৳{serviceData?.price}</span>
           </p>
           <p className="text-sm sm:text-base flex items-center gap-1 mb-3">
             <span>Duration: </span>
@@ -106,7 +110,8 @@ const ServiceDetails = () => {
             </span>
           </p>
           {user?.role === "user" &&
-            slotsByService?.data?.length && isSlotExist && (
+            slotsByService?.data?.length &&
+            isSlotExist && (
               <form onSubmit={handleSubmit}>
                 <div className="grid sm:grid-cols-[322px_auto] gap-5 w-full lg:w-3/4 xl:w-2/4">
                   <DayPicker
@@ -160,7 +165,8 @@ const ServiceDetails = () => {
                 </div>
               </form>
             )}
-          {(user?.role === "user" && !slotsByService?.data?.length) || (user?.role === "user" && !isSlotExist) && (
+          {((user?.role === "user" && !slotsByService?.data?.length) ||
+            (user?.role === "user" && !isSlotExist)) && (
             <div className="pt-4">
               <p className="text-2xl text-gray-300 font-medium">
                 No slot is available for this service

@@ -46,7 +46,7 @@ const SlotStatusChange = ({ slot }: { slot: any }) => {
       <DialogTrigger asChild>
         <Button
           className="px-1 py-2 h-fit rounded w-fit"
-          disabled={slot?.isBooked === "booked"}
+          disabled={slot?.isBooked === "booked" || slot?.isBooked === "expired"}
         >
           <FaEdit />
         </Button>
@@ -69,6 +69,7 @@ const SlotStatusChange = ({ slot }: { slot: any }) => {
                 <option value="">Select status</option>
                 <option value="available">Available</option>
                 <option value="cancelled">Cancelled</option>
+                <option value="expired">Expired</option>
                 <option value="booked" disabled>
                   Booked
                 </option>

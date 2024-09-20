@@ -7,7 +7,6 @@ import Home from "@/pages/beforeLogin/home/Home";
 import ServiceDetails from "@/pages/beforeLogin/services/ServiceDetails";
 import Services from "@/pages/beforeLogin/services/Services";
 import Reviews from "@/pages/beforeLogin/home/Reviews";
-import BookingSuccessful from "@/pages/beforeLogin/booking/BookingSuccessful";
 import Booking from "@/pages/beforeLogin/booking/Booking";
 import Login from "@/pages/beforeLogin/authentication/Login";
 import Signup from "@/pages/beforeLogin/authentication/Signup";
@@ -43,11 +42,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/booking",
-        element: <Booking />,
-      },
-      {
-        path: "/booking-successful",
-        element: <BookingSuccessful />,
+        element: (
+          <ProtectedRouteForUser role="user">
+            <Booking />
+          </ProtectedRouteForUser>
+        ),
       },
       {
         path: "/reviews",

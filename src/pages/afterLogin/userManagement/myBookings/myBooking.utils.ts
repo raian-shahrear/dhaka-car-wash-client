@@ -5,10 +5,10 @@ export interface TimeLeft {
   seconds: number;
 }
 
-export const calculateTimeLeft = (date: string, endTime: string): TimeLeft => {
-  const endDateTime = new Date(`${date}T${endTime}`).getTime();
+export const calculateTimeLeft = (date: string, startTime: string): TimeLeft => {
+  const startDateTime = new Date(`${date}T${startTime}`).getTime();
   const now = new Date().getTime();
-  const difference = endDateTime - now;
+  const difference = startDateTime - now;
 
   let timeLeft: TimeLeft;
 
@@ -24,4 +24,20 @@ export const calculateTimeLeft = (date: string, endTime: string): TimeLeft => {
   }
 
   return timeLeft;
+};
+
+
+export const formatTimeLeft = (timeLeft: TimeLeft) => {
+  const { days, hours, minutes, seconds } = timeLeft;
+
+  // Create an array to store non-zero units
+  const formattedTime: string[] = [];
+
+  if (days > 0) formattedTime.push(`${days}d`);
+  if (hours > 0 || days > 0) formattedTime.push(`${hours.toString().padStart(2, "0")}h`);
+  if (minutes > 0 || hours > 0 || days > 0) formattedTime.push(`${minutes.toString().padStart(2, "0")}m`);
+  formattedTime.push(`${seconds.toString().padStart(2, "0")}s`); // Always show seconds
+
+  // Join the array with colons
+  return formattedTime.join(':');
 };
