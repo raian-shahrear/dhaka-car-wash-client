@@ -36,6 +36,8 @@ const ServiceComparison = () => {
   useEffect(() => {
     if (selectService.length > 0) {
       setComparisonService(allServices?.data);
+    }else{
+      setComparisonService([]);
     }
   }, [selectService, allServices]);
 

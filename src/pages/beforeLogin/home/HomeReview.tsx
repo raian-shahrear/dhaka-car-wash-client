@@ -126,11 +126,11 @@ const HomeReview = ({ user }: TUserProps) => {
         </div>
         {!user?.userEmail && (
           <div className="bg-review-login-overlay container h-full absolute top-0 left-2/4 -translate-x-2/4 flex flex-col justify-center items-center gap-4 p-5">
-            <p className="text-gray-900 font-semibold text-lg text-center">
+            <p className="text-white font-semibold text-lg text-center">
               If want to place your review or view all review, please login.
             </p>
             <Link to="/login">
-              <Button className="text-sm font-medium py-2 h-fit">Login</Button>
+              <Button className="text-sm font-medium py-2 h-fit bg-gray-800">Login</Button>
             </Link>
           </div>
         )}

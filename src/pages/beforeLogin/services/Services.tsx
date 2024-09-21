@@ -13,7 +13,7 @@ import { filterFun } from "@/utils/filter";
 
 const Services = () => {
   const navigate = useNavigate();
-  const [dataLimit, setDataLimit] = useState(10);
+  const [dataLimit, setDataLimit] = useState(8);
   const [pageCount, setPageCount] = useState(1);
 
   // search/filter

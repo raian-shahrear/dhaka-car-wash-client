@@ -60,7 +60,7 @@ export default {
 		},
 		backgroundColor: {
 			"review-background": "rgba(0, 0, 0, 0.7)",
-			"review-login-overlay": "rgba(255, 255, 255, 0.9)",
+			"review-login-overlay": "rgba(0, 0, 0, 0.9)",
 		}
   	}
   },

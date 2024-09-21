@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
 const Reviews = () => {
-  const [dataLimit, setDataLimit] = useState(10);
+  const [dataLimit, setDataLimit] = useState(9);
   const [pageCount, setPageCount] = useState(1);
   // get filter data from the utility
   const filterObj = filterFun({

@@ -30,7 +30,8 @@ const Pagination = ({
           onChange={(e) => handlePageLimit(Number(e.target.value))}
           defaultValue={dataLimit}
         >
-          <option value="2">2</option>
+          <option value="">Limit</option>
+          <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
         </select>
