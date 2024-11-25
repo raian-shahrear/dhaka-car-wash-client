@@ -1,7 +1,7 @@
 # Dhaka Car Wash
 
 ## Introduction
-Dhaka Car Wash is a eCommerce site where various kind of vehicle service items show. Anyone can preview the services, and search, sort, filter by price. After that booking can be placed as per service slot. Service, slot, booking can be manage from admin & user dashboard.
+Dhaka Car Wash is a service based site where various kind of vehicle service items are shown. Anyone can preview the services, and search, sort, filter by price. After that booking can be placed as per service slot. Service, slot, booking can be manage from admin & user dashboard.
 ###### Live Site: [Dhaka-Car-Wash](https://dhaka-car-wash-client.vercel.app)
 
 ## Project Description
