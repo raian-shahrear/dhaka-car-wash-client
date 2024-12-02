@@ -48,7 +48,7 @@ const Bookings = () => {
             <TableBody>
               {bookings?.data?.map((booking: any, idx: number) => (
                 <TableRow key={booking?._id}>
-                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">{(pageCount - 1) * dataLimit + idx + 1}</TableCell>
                   <TableCell className="font-medium">
                     {booking?.customer?.name}
                   </TableCell>

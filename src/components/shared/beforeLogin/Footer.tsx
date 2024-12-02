@@ -145,7 +145,7 @@ const Footer = () => {
 
       <div className="border-t border-gray-700 text-center py-6 mt-10">
         <p className="text-gray-400 text-xs">
-          Copyright &copy; 2024, Dhaka Car Wash
+          Copyright &copy; {new Date().getFullYear()}, Dhaka Car Wash
         </p>
       </div>
     </footer>

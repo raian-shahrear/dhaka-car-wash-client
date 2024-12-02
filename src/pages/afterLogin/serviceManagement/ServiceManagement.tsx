@@ -98,7 +98,7 @@ const ServiceManagement = () => {
             <TableBody>
               {services?.data?.map((service: any, idx: number) => (
                 <TableRow key={service?._id}>
-                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">{(pageCount - 1) * dataLimit + idx + 1}</TableCell>
                   <TableCell>
                     <div>
                       <img

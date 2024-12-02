@@ -50,7 +50,7 @@ const Users = () => {
             <TableBody>
               {allUsers?.data?.map((user: any, idx: number) => (
                 <TableRow key={user?._id}>
-                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">{(pageCount - 1) * dataLimit + idx + 1}</TableCell>
                   <TableCell>
                       <img src={user?.profile} alt="profile" className="w-8 h-8 rounded-full object-cover object-center" />
                   </TableCell>

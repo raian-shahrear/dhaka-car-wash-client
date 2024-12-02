@@ -51,14 +51,15 @@ const HomeFeatured = () => {
               <div className="bg-feature-overlay w-full h-full absolute top-0 left-0 rounded-md"></div>
               <div className="w-full absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
                 <div className="text-center p-10 lg:p-5 xl:p-10">
-                  <p className="text-xl font-semibold text-red-300">
+                  <p className="text-xl font-semibold text-red-300 whitespace-nowrap text-ellipsis overflow-hidden">
                     {service?.name}
                   </p>
                   <p className="mt-6 text-sm text-white">
                     {service?.description?.length > 80
-                      ? service?.description.slice(0, 79) + "..."
+                      ? service?.description?.slice(0, 79) + "..."
                       : service?.description}
                   </p>
+                  <p className="mt-3 text-lg text-white">৳{service?.price}</p>
                   <div className="flex justify-center items-center mt-8">
                     <Button
                       type="button"

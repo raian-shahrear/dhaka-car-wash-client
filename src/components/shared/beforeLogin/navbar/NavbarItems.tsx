@@ -55,6 +55,48 @@ const NavbarItems = () => {
           Comparison
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/blogs"
+          aria-label="Blogs"
+          title="Blogs"
+          className={({ isActive }) =>
+            isActive
+              ? "text-sm font-medium tracking-wide text-gray-900 lg:text-white transition-all duration-300 lg:hover:text-white"
+              : "text-sm font-medium tracking-wide text-gray-500 lg:text-gray-400 transition-all duration-300 lg:hover:text-white"
+          }
+        >
+          Blogs
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/about-us"
+          aria-label="About Us"
+          title="About Us"
+          className={({ isActive }) =>
+            isActive
+              ? "text-sm font-medium tracking-wide text-gray-900 lg:text-white transition-all duration-300 lg:hover:text-white"
+              : "text-sm font-medium tracking-wide text-gray-500 lg:text-gray-400 transition-all duration-300 lg:hover:text-white"
+          }
+        >
+          About Us
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/contact-us"
+          aria-label="Contact Us"
+          title="Contact Us"
+          className={({ isActive }) =>
+            isActive
+              ? "text-sm font-medium tracking-wide text-gray-900 lg:text-white transition-all duration-300 lg:hover:text-white"
+              : "text-sm font-medium tracking-wide text-gray-500 lg:text-gray-400 transition-all duration-300 lg:hover:text-white"
+          }
+        >
+          Contact Us
+        </NavLink>
+      </li>
       <li className="flex items-center gap-2 relative">
         {(user as TUser)?.userEmail ? (
           <div className="hidden lg:block">

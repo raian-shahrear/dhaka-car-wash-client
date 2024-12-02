@@ -50,7 +50,7 @@ const SlotManagement = () => {
             <TableBody>
               {slots?.data?.map((slot: any, idx: number) => (
                 <TableRow key={slot?._id}>
-                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">{(pageCount - 1) * dataLimit + idx + 1}</TableCell>
                   <TableCell className="font-bold">
                     {slot?.service?.name}
                   </TableCell>

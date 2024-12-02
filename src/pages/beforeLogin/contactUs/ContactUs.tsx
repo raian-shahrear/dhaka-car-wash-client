@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import {
   FaFacebookF,
@@ -11,23 +10,12 @@ import {
 import { HiOutlinePhone } from "react-icons/hi";
 import { MdOutlineMail } from "react-icons/md";
 import { toast } from "sonner";
-
-const HomeContact = () => {
-  const { user } = useAppSelector((state) => state.auth);
+const ContactUs = () => {
   const [changeEmail, setChangeEmail] = useState("");
   const [changeMessage, setChangeMessage] = useState("");
-
   return (
-    <section
-      className="container mx-auto px-4 lg:px-10 pt-4 mb-10"
-      data-aos="fade-right"
-      data-aos-easing="ease-out-cubic"
-      data-aos-duration="1000"
-    >
-      <h2 className="text-center text-xl sm:text-2xl font-bold text-gray-900 mb-10">
-        Contact Us
-      </h2>
-      <div className="w-full md:w-10/12 lg:w-7/12 mx-auto shadow-lg rounded-md border-t-4 border-gray-900 p-6 md:p-10">
+    <div className="container mx-auto px-4 lg:px-10 pt-20 lg:pt-32 min-h-[67vh]">
+      <div className="w-full lg:w-8/12 mx-auto shadow-lg rounded-md border-t-4 border-gray-900 p-6 lg:p-10 bg-[#ffffff] contact-us-background">
         <div className="flex flex-col md:flex-row gap-x-5 lg:gap-x-10 gap-y-8">
           <div className="text-gray-900">
             <p className="font-bold text-lg">Dhaka Car Wash</p>
@@ -85,10 +73,10 @@ const HomeContact = () => {
             </div>
           </div>
           <form
-            className="flex-1 md:border-l md:pl-5 lg:pl-10"
             target="_blank"
             action="https://formsubmit.co/www.raianshahrear10@gmail.com"
             method="POST"
+            className="flex-1 md:border-l border-gray-300 md:pl-5 lg:pl-10"
           >
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_subject" value="New submission!" />
@@ -103,7 +91,6 @@ const HomeContact = () => {
                 type="email"
                 name="email"
                 placeholder="Enter email"
-                defaultValue={user?.email}
                 className="border rou rounded text-sm p-2 w-full"
                 onChange={(e) => setChangeEmail(e.target.value)}
                 required
@@ -129,8 +116,22 @@ const HomeContact = () => {
           </form>
         </div>
       </div>
-    </section>
+      <div className="w-full lg:w-8/12 mx-auto mt-6 shadow-lg rounded-md p-6 lg:p-10 bg-[#ffffff]">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d173.9652567651983!2d4.845586469253307!3d45.76228925250189!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4ea5f4a691e2b%3A0x82ee6479be13da2b!2s63%20Av.%20Mar%C3%A9chal%20de%20Saxe%2C%2069003%20Lyon%2C%20France!5e0!3m2!1sen!2sbd!4v1733142071580!5m2!1sen!2sbd"
+          width="600"
+          height="450"
+          style={{ border: "0" }}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full h-[300]"
+        ></iframe>
+        <p className="mt-4 text-sm font-medium text-center">
+          63 Av. Maréchal de Saxe, 69003 Lyon, France
+        </p>
+      </div>
+    </div>
   );
 };
 
-export default HomeContact;
+export default ContactUs;

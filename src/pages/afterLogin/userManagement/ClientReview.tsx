@@ -65,7 +65,7 @@ const ClientReview = () => {
             <TableBody>
               {reviews?.data?.map((review: any, idx: number) => (
                 <TableRow key={review?._id}>
-                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">{(pageCount - 1) * dataLimit + idx + 1}</TableCell>
                   <TableCell className="font-bold">
                     {review?.user?.name}
                   </TableCell>

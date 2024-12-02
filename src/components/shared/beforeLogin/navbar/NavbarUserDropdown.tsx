@@ -3,16 +3,16 @@ import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useGetAllUsersQuery } from "@/redux/api/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import Loading from "@/utils/Loading";
 import { useEffect, useState } from "react";
 import { FaUserGear } from "react-icons/fa6";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { MdOutlineLogout, MdOutlineSpaceDashboard } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const NavbarUserDropdown = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const { data: allUsers, isLoading: isGetUserLoading } =
+  const { data: allUsers } =
     useGetAllUsersQuery(undefined);
   const loggedInUser = allUsers?.data?.find(
     (info: any) => info?._id === user?._id
@@ -31,20 +31,20 @@ const NavbarUserDropdown = () => {
     reduxDispatch(logout());
   };
 
-  if (isGetUserLoading) {
-    return <Loading />;
-  }
   return (
     <div className="relative">
       <div
-        className="cursor-pointer"
+        className="cursor-pointer relative"
         onClick={() => setControlDropdown(!controlDropdown)}
       >
         <img
           src={preview}
           alt="user"
-          className="w-8 h-8 rounded-full border-2 object-cover object-center"
+          className="w-9 h-9 rounded-full border-2 object-cover object-center"
         />
+        <span className="absolute bottom-0 -right-2 text-red-400 bg-gray-900 rounded-full">
+          <IoIosArrowDropdownCircle />
+        </span>
       </div>
       <div
         className={`absolute top-9 right-0 bg-white rounded-lg shadow-xl w-60 z-10 ${

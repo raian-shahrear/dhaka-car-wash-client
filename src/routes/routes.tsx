@@ -21,6 +21,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import ProtectedRouteForUser from "./ProtectedRouteForUser";
 import MyReview from "@/pages/afterLogin/userManagement/myReview/MyReview";
 import ClientReview from "@/pages/afterLogin/userManagement/ClientReview";
+import ContactUs from "@/pages/beforeLogin/contactUs/ContactUs";
+import AboutUS from "@/pages/beforeLogin/aboutUs/AboutUS";
+import Blogs from "@/pages/beforeLogin/blog/Blogs";
+import BlogDetails from "@/pages/beforeLogin/blog/BlogDetails";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +63,23 @@ const router = createBrowserRouter([
       {
         path: "/service-comparison",
         element: <ServiceComparison />,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs />,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUS />,
+      },
+      
+      {
+        path: "/blogs",
+        element: <Blogs />,
+      },
+      {
+        path: "/blogs/:id",
+        element: <BlogDetails />,
       },
     ],
   },

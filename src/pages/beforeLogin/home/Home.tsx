@@ -1,5 +1,4 @@
 import { useAppSelector } from "@/redux/hooks";
-import HomeContact from "./HomeContact";
 import HomeFeatured from "./HomeFeatured";
 import HomeHero from "./HomeHero";
 import HomeReview from "./HomeReview";
@@ -17,7 +16,6 @@ const Home = () => {
       <HomeHero />
       <HomeFeatured />
       <HomeReview user={user as TUser} />
-      <HomeContact />
     </div>
   );
 };
