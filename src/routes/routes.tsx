@@ -54,11 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/reviews",
-        element: (
-          <ProtectedRoute>
-            <Reviews />
-          </ProtectedRoute>
-        ),
+        element: <Reviews />,
       },
       {
         path: "/service-comparison",
@@ -72,7 +68,7 @@ const router = createBrowserRouter([
         path: "/about-us",
         element: <AboutUS />,
       },
-      
+
       {
         path: "/blogs",
         element: <Blogs />,

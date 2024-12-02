@@ -9,16 +9,8 @@ import { HiOutlinePhone } from "react-icons/hi";
 import { MdOutlineMail } from "react-icons/md";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo/logo.png";
-import { useAppSelector } from "@/redux/hooks";
-import { verifyToken } from "@/utils/verifyToken";
-import { TUser } from "@/types";
 
 const Footer = () => {
-  const { token } = useAppSelector((state) => state.auth);
-  let user;
-  if (token) {
-    user = verifyToken(token);
-  }
   return (
     <footer className=" bg-gray-900 pt-6 text-white">
       <div className="container mx-auto px-4 lg:px-10 xxl:px-0 py-5">
@@ -44,7 +36,7 @@ const Footer = () => {
           </div>
           <div>
             <p className="text-lg mb-3 font-semibold">Quick Links</p>
-            <nav>
+            <nav className="lg:flex gap-16">
               <ul className="flex flex-col gap-y-1">
                 <li>
                   <Link
@@ -70,16 +62,40 @@ const Footer = () => {
                     Comparison
                   </Link>
                 </li>
-                {(user as TUser)?.userEmail && (
-                  <li>
-                    <Link
-                      to="/reviews"
-                      className="text-sm transition-all duration-300 hover:underline"
-                    >
-                      Reviews
-                    </Link>
-                  </li>
-                )}
+                <li>
+                  <Link
+                    to="/reviews"
+                    className="text-sm transition-all duration-300 hover:underline"
+                  >
+                    Reviews
+                  </Link>
+                </li>
+              </ul>
+              <ul className="flex flex-col gap-y-1">
+                <li>
+                  <Link
+                    to="/blogs"
+                    className="text-sm transition-all duration-300 hover:underline"
+                  >
+                    Blogs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/about-us"
+                    className="text-sm transition-all duration-300 hover:underline"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact-us"
+                    className="text-sm transition-all duration-300 hover:underline"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
             </nav>
           </div>

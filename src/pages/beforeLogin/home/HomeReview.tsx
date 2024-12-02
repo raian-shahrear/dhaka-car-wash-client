@@ -111,10 +111,7 @@ const HomeReview = ({ user }: TUserProps) => {
                   ))}
                 </Swiper>
                 <div className="flex justify-center mt-4 sm:mt-6">
-                  <Button
-                    className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200"
-                    disabled={user?.userEmail ? false : true}
-                  >
+                  <Button className="bg-white text-gray-900 font-medium py-2 h-fit transition-all duration-300 hover:bg-gray-200">
                     <Link to="/reviews" className="w-fit">
                       All Reviews
                     </Link>
@@ -124,16 +121,6 @@ const HomeReview = ({ user }: TUserProps) => {
             )}
           </div>
         </div>
-        {!user?.userEmail && (
-          <div className="bg-review-login-overlay container h-full absolute top-0 left-2/4 -translate-x-2/4 flex flex-col justify-center items-center gap-4 p-5">
-            <p className="text-white font-semibold text-lg text-center">
-              If want to place your review or view all review, please login.
-            </p>
-            <Link to="/login">
-              <Button className="text-sm font-medium py-2 h-fit bg-gray-800">Login</Button>
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );
